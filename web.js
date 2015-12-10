@@ -1,25 +1,45 @@
 'use strict';
 
+const fs = require('fs');
+const join = require('path').join;
+const env = require('./env');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const sessionApi = require('./services/session');
+const mongoose = require('mongoose');
+
+const models = join(__dirname, 'models');
+const port = process.env['PORT'] || 4000;
 const app = express();
+
+module.exports = app;
+
+fs.readdirSync(models)
+	.filter(file => ~file.indexOf('.js'))
+	.forEach(file => require(join(models, file)));
 
 app.use(cookieParser());
 
-/*eslint-disable no-console */
-app.get('/', (req, res) => {
-	let sessionId = req.cookies['FTSession'];
-	if ( !sessionId ) {
-		res.end('No session id found.');
-	}
-	sessionApi.getUserData(sessionId)
-		.then((userData) => {
-			res.end(userData.uuid);
-		}).catch((err) => {
-			res.end(err.message);
-		});
-});
-/*eslint-enable no-console */
+require('./routes')(app);
 
-app.listen(process.env['PORT'] || 4000);
+/*eslint-disable no-console */
+dbConnect()
+	.on('error', console.log)
+	.on('disconnect', dbConnect)
+	.on('open', listen);
+/*eslint-enable no-console*/
+
+function dbConnect() {
+	let options = {
+		server: {
+			socketOptions: {
+				keepAlive: 1
+			}
+		}
+	};
+	return mongoose.connect(env.mongodb.uri, options).connection;
+}
+
+function listen() {
+	app.listen(port);
+}
+
