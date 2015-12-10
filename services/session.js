@@ -19,8 +19,8 @@ const getUserData = (sessionId) => {
 				return reject(new Error(response.body));
 			}
 			try {
-				let res = JSON.parse(body);
-				return resolve(res);
+				let sessionData = JSON.parse(body);
+				return resolve(sessionData);
 			} catch(error) {
 				return reject(error);
 			}
