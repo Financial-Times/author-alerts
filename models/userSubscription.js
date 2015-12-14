@@ -4,23 +4,37 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const Schema = mongoose.Schema;
 
-const UserSubscriptionSchema = new Schema({
+const Subscriptions= new Schema({
 	_id: String,
-	subscriptions: [{
-		_id : String,
-		taxonomyName: String,
-		immediate: Boolean
-	}]
+	taxonomyName: String,
+	immediate: Boolean
 });
 
+const UserSubscriptionSchema = new Schema({
+	_id: String,
+	subscriptions: [Subscriptions]
+});
+
+
+
 UserSubscriptionSchema.methods = {
+	filterSubscriptions(subscriptionItems) {
+		let newIds = _.pluck(subscriptionItems, '_id');
+		if ( this.subscriptions.length ) {
+			this.subscriptions = this.subscriptions.filter(s => {
+				return newIds.indexOf(s._id) === -1;
+			});
+		}
+	},
 	setSubscriptions(subscriptionItems) {
-		return this.update({$addToSet: {subscriptions: {$each: subscriptionItems}}}).exec();
+		this.filterSubscriptions(subscriptionItems);
+		subscriptionItems.forEach((item) => {
+			this.subscriptions.push(item);
+		});
+		return this.save();
 	},
 	removeSubscriptions(subscriptionItems) {
-		this.subscriptions = this.subscriptions.filter(s => {
-			return _.pluck(subscriptionItems, '_id').indexOf(s._id) === -1;
-		});
+		this.filterSubscriptions(subscriptionItems);
 		if (this.subscriptions.length) {
 			return this.save();
 		}
