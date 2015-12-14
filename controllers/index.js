@@ -19,10 +19,12 @@ const extractSubscriptionItems = (paramsList) => {
 	return paramsList.map(createSubscriptionItem);
 };
 
+/*eslint-disable no-console */
 const handleError = (error, res) => {
 	console.log(error);
-	res.end('Error');
+	res.statusCode(500).send('Error');
 };
+/*eslint-enable no-console */
 
 exports.validate = (req, res, next) => {
 	let sessionId = req.cookies['FTSession'];
@@ -65,7 +67,9 @@ exports.unfollow = (req, res) => {
 		.then((userData) => {
 			return UserSubscription.findById(userData.uuid).exec();
 		}).then((user) => {
-			return user.removeSubscriptions(req.subscriptions);
+			if (user) {
+				return user.removeSubscriptions(req.subscriptions);
+			}
 		}).then(() => {
 			res.end('done');
 		}).catch((error) => {
