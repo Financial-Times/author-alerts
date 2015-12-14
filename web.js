@@ -19,6 +19,7 @@ fs.readdirSync(models)
 
 app.use(cookieParser());
 
+require('express-ftwebservice')(app, require('./ftwebserviceOpts'));
 require('./routes')(app);
 
 /*eslint-disable no-console */
