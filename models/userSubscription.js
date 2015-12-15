@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const Schema = mongoose.Schema;
 
-const Subscriptions= new Schema({
+const Subscription= new Schema({
 	_id: String,
 	taxonomyName: String,
 	immediate: Boolean
@@ -12,10 +12,8 @@ const Subscriptions= new Schema({
 
 const UserSubscriptionSchema = new Schema({
 	_id: String,
-	subscriptions: [Subscriptions]
+	subscriptions: [Subscription]
 });
-
-
 
 UserSubscriptionSchema.methods = {
 	filterSubscriptions(subscriptionItems) {
