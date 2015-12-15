@@ -8,7 +8,9 @@
   "author": "Dragos Digulescu <dragos.digulescu@iquestgroup.com> (https://github.com/ddigulescu)",
   "license": "ISC",
   "devDependencies": {
-    "babel-eslint": "^4.1.6"
+    "babel-eslint": "^4.1.6",
+    "expect": "^1.13.2",
+    "mocha": "^2.3.4"
   },
   "dependencies": {
     "cookie-parser": "^1.4.0",
