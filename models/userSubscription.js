@@ -15,6 +15,8 @@ const UserSubscriptionSchema = new Schema({
 	subscriptions: [Subscription]
 });
 
+UserSubscriptionSchema.set('versionKey', false);
+
 UserSubscriptionSchema.methods = {
 	filterSubscriptions(subscriptionItems) {
 		let newIds = _.pluck(subscriptionItems, '_id');
@@ -41,14 +43,11 @@ UserSubscriptionSchema.methods = {
 };
 
 UserSubscriptionSchema.statics = {
-	createItem(id) {
-		return Promise.resolve(this.create({_id: id}));
-	},
 	findByIdOrInsert(id) {
 		return this.findById(id).exec()
 				.then((item) => {
 					if(_.isEmpty(item)) {
-						return this.createItem(id);
+						return this.create({'_id': id});
 					}
 					return item;
 				});
