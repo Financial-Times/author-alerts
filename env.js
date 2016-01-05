@@ -6,7 +6,7 @@ const config = {
 		key: process.env['SESSION_API_KEY']
 	},
 	mongodb: {
-		uri: process.env['MONGODB_URI']
+		uri: process.env['MONGOLAB_URI']
 	}
 };
 
