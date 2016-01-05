@@ -3,6 +3,8 @@
 const request = require('request');
 const env = require('../env');
 
+const errPrefix = '[sessionApi]:';
+
 const getUserData = (sessionId) => {
 	if ( !sessionId ) {
 		return Promise.reject(new Error('A valid session id must be provided.'));
@@ -16,13 +18,13 @@ const getUserData = (sessionId) => {
 	return new Promise((resolve, reject) => {
 		request(options, (error, response, body) => {
 			if ( error || response.statusCode !== 200 ) {
-				return reject(new Error(response.body));
+				return reject(errPrefix + (error || response.body));
 			}
 			try {
 				let sessionData = JSON.parse(body);
 				return resolve(sessionData);
 			} catch(error) {
-				return reject(error);
+				return reject(errPrefix + error);
 			}
 		});
 	});
