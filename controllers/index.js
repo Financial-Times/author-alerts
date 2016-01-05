@@ -76,3 +76,15 @@ exports.unfollow = (req, res) => {
 			handleError(error, res);
 		});
 };
+
+exports.users = (req, res) => {
+	let params = req.query;
+	if ( !params.hasOwnProperty('id') ) {
+		return res.end(`'id' parameter is required.`);
+	}
+	UserSubscription.find({
+		subscriptions: {$elemMatch: {_id: params['id']}}
+	}).select({_id: 1}).exec().then(users => {
+		res.json(users);
+	});
+};
