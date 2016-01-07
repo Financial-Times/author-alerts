@@ -1,2 +1,2 @@
 web: node web.js
-content-worker: node workers/content.js
+worker: node workers/content.js
