@@ -2,6 +2,8 @@
 
 const Promise = require('bluebird');
 const mongoose = Promise.promisifyAll(require('mongoose'));
+const moment = require('moment');
+const env = require('./env');
 const MongoClient = require('mongodb').MongoClient;
 const request = require('request');
 const localDb = require('./services/db');
@@ -26,6 +28,7 @@ function getUserData(item) {
 					userId: userIdData.user.id,
 					taxonomyId: item.taxonomyId || null,
 					taxonomyName:  item.taxonomyName || '',
+					addedAt: moment().format(env.dateFormat),
 					immediate:  (item.immediate === 'true')
 				});
 			} catch(error) {

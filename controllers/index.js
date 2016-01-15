@@ -2,6 +2,8 @@
 
 const sessionApi = require('../services/session');
 const Promise = require('bluebird');
+const moment = require('moment');
+const env = require('../env');
 const mongoose = Promise.promisifyAll(require('mongoose'));
 const _ = require('lodash');
 
@@ -58,6 +60,7 @@ exports.follow = (req, res) => {
 					userId: userData.uuid,
 					taxonomyId: subscription.taxonomyId,
 					taxonomyName: subscription.taxonomyName,
+					addedAt: moment().format(env.dateFormat),
 					immediate: subscription.immediate
 				};
 				return UserSubscription.update({
