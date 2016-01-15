@@ -7,7 +7,7 @@ function dbConnect() {
 	let options = {
 		server: {
 			socketOptions: {
-				keepAlive: 1
+				keepAlive: 120
 			}
 		}
 	};
