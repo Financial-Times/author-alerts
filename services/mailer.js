@@ -15,14 +15,14 @@ exports.send = (to, subject, body) => {
 		json: true,
 		body: {
 			transmissionHeader: {
-				returnPath: 'dragos.digulescu@ft.com',
+				returnPath: 'email@ft.com',
 				metadata: {
 					userUuid: to
 				}
 			},
 			from: {
-				address: 'dragos.digulescu@ft.com',
-				name: 'DD Test'
+				address: 'email@ft.com',
+				name: 'FT Author Alerts'
 			},
 			subject: subject,
 			htmlContent: body,
