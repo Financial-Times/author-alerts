@@ -1,58 +1,19 @@
 'use strict';
 
+const moment = require('moment');
+const env = require('../env');
 const mongoose = require('mongoose');
-const _ = require('lodash');
 const Schema = mongoose.Schema;
 
-const Subscription= new Schema({
-	_id: String,
+const UserSubscriptionSchema = new Schema({
+	userId: {type: String, index: true},
+	taxonomyId: {type: String, index: true},
 	taxonomyName: String,
+	addedAt: {type: Date, default: moment().format(env.dateFormat)},
 	immediate: Boolean
 });
 
-const UserSubscriptionSchema = new Schema({
-	_id: String,
-	subscriptions: [Subscription]
-});
-
 UserSubscriptionSchema.set('versionKey', false);
-
-UserSubscriptionSchema.methods = {
-	filterSubscriptions(subscriptionItems) {
-		let newIds = _.pluck(subscriptionItems, '_id');
-		if ( this.subscriptions.length ) {
-			this.subscriptions = this.subscriptions.filter(s => {
-				return newIds.indexOf(s._id) === -1;
-			});
-		}
-	},
-	setSubscriptions(subscriptionItems) {
-		this.filterSubscriptions(subscriptionItems);
-		subscriptionItems.forEach((item) => {
-			this.subscriptions.push(item);
-		});
-		return this.save();
-	},
-	removeSubscriptions(subscriptionItems) {
-		this.filterSubscriptions(subscriptionItems);
-		if (this.subscriptions.length) {
-			return this.save();
-		}
-		return this.remove();
-	}
-};
-
-UserSubscriptionSchema.statics = {
-	findByIdOrInsert(id) {
-		return this.findById(id).exec()
-				.then((item) => {
-					if(_.isEmpty(item)) {
-						return this.create({'_id': id});
-					}
-					return item;
-				});
-	}
-};
 
 mongoose.model('UserSubscription', UserSubscriptionSchema);
 

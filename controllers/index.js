@@ -1,7 +1,8 @@
 'use strict';
 
 const sessionApi = require('../services/session');
-const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const mongoose = Promise.promisifyAll(require('mongoose'));
 const _ = require('lodash');
 
 const UserSubscription = mongoose.model('UserSubscription');
@@ -9,7 +10,7 @@ const UserSubscription = mongoose.model('UserSubscription');
 /** extract to helper **/
 const createSubscriptionItem = (parts) => {
 	return parts.split(',').reduce((item, value, index, values) => {
-		item['_id'] = values[2];
+		item['taxonomyId'] = values[2];
 		item['taxonomyName'] = values[1];
 		item['immediate'] = (values[0] === 'immediate');
 		return item;
@@ -52,9 +53,18 @@ exports.validate = (req, res, next) => {
 exports.follow = (req, res) => {
 	sessionApi.getUserData(req.sessionId)
 		.then((userData) => {
-			return UserSubscription.findByIdOrInsert(userData.uuid);
-		}).then((user) => {
-			return user.setSubscriptions(req.subscriptions);
+			return Promise.all(req.subscriptions.map(subscription => {
+				let userSubscriptionItem = {
+					userId: userData.uuid,
+					taxonomyId: subscription.taxonomyId,
+					taxonomyName: subscription.taxonomyName,
+					immediate: subscription.immediate
+				};
+				return UserSubscription.update({
+					userId: userData.uuid,
+					taxonomyId: subscription.taxonomyId
+				}, userSubscriptionItem, {upsert: true}).execAsync();
+			}));
 		}).then(() => {
 			res.end('done');
 		}).catch((error) => {
@@ -65,11 +75,12 @@ exports.follow = (req, res) => {
 exports.unfollow = (req, res) => {
 	sessionApi.getUserData(req.sessionId)
 		.then((userData) => {
-			return UserSubscription.findById(userData.uuid).exec();
-		}).then((user) => {
-			if (user) {
-				return user.removeSubscriptions(req.subscriptions);
-			}
+			return Promise.all(req.subscriptions.map(subscription => {
+				return UserSubscription.remove({
+					userId: userData.uuid,
+					taxonomyId: subscription.taxonomyId
+				}).execAsync();
+			}));
 		}).then(() => {
 			res.end('done');
 		}).catch((error) => {
@@ -83,8 +94,8 @@ exports.users = (req, res) => {
 		return res.end(`'id' parameter is required.`);
 	}
 	UserSubscription.find({
-		subscriptions: {$elemMatch: {_id: params['id']}}
-	}).select({_id: 1}).exec().then(users => {
+		taxonomyId: params['id']
+	}).select({userId: 1, _id: 0}).execAsync().then(users => {
 		res.json(users);
 	});
 };

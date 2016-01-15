@@ -1,6 +1,7 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const Promise = require('bluebird');
+const mongoose = Promise.promisifyAll(require('mongoose'));
 const MongoClient = require('mongodb').MongoClient;
 const request = require('request');
 const localDb = require('./services/db');
@@ -21,20 +22,17 @@ function getUserData(item) {
 			}
 			try {
 				let userIdData = JSON.parse(body);
-				return resolve({_id: userIdData.user.id});
+				return resolve({
+					userId: userIdData.user.id,
+					taxonomyId: item.taxonomyId || null,
+					taxonomyName:  item.taxonomyName || '',
+					immediate:  (item.immediate === 'true')
+				});
 			} catch(error) {
 				return reject(`getUserDataError: ${error}`);
 			}
 		});
 	});
-}
-
-function getSubscription(item) {
-	return {
-		_id: item.taxonomyId || null,
-		taxonomyName:  item.taxonomyName || '',
-		immediate:  (item.immediate === 'true')
-	};
 }
 
 /*eslint-disable no-console */
@@ -51,13 +49,13 @@ MongoClient.connect(process.env['OLD_MONGO'], (err, db) => {
 	});
 	localDb.connect(() => {
 		stream.on('data', (doc) => {
-			let subscription = getSubscription(doc);
 			return getUserData(doc).then((userObj) => {
-				if (userObj['_id']) {
-					return UserSubscription.findOneAndUpdate(userObj, userObj, {upsert: true, new: true}).exec();
+				if (userObj['userId']) {
+					return UserSubscription.update({
+						userId: userObj.userId,
+						taxonomyId: userObj.taxonomyId
+					}, userObj, {upsert: true, new: true}).execAsync();
 				}
-			}).then((user) => {
-				return user.setSubscriptions([].concat(subscription));
 			}).then((doc) => {
 				count++;
 				console.log(`[${count}]: ${JSON.stringify(doc)}`);
