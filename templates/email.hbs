@@ -1,0 +1,610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+        }
+        p {
+            margin-top: 10px;
+            margin-bottom: 0px;
+            padding: 0;
+        }
+        .applelinks a {
+            color: inherit;
+            text-decoration: none;
+        }
+        @media all and (max-width: 450px) {
+            .wrapperInner, .containerTable {
+                *width: 400px !important;
+                _width: 400px !important;
+                width: 100% !important;
+            }
+            .whiteBorder {
+                width: 0 !important;
+                font-size: 0 !important;
+            }
+            .otherHeadlines {
+                font-size: 13pt !important;
+                line-height: 16pt !important;
+                color: #505050 !important;
+                font-family: Georgia !important;
+            }
+            .otherHeadlines a, .otherHeadlinesLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+                display: block !important;
+            }
+            .ft-logo {
+                font-size: 20pt !important;
+                line-height: 24pt !important;
+                height: 20pt !important;
+                text-align: center !important;
+                font-family: Georgia !important;
+            }
+            #ft-logo-img {
+                *width: 340px !important;
+                _width: 340px !important;
+                width: 80% !important;
+                max-width: 420px !important;
+                font-size: 18pt;
+            }
+            .ft-logo-briefing {
+                font-size: 5px !important;
+                line-height: 5px !important;
+                height: 5px !important;
+            }
+            .ft-desc {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+                text-align: center !important;
+                font-weight: bold !important;
+            }
+            .ft-header-bar {
+                color: #333333 !important;
+                background-color: #E9DECE !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                padding: 5px 10px 4px 10px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .ft-header-bar-follow {
+                color: #9b9491 !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                /*padding: 5px 0px 4px 0px !important;*/
+                padding: 5px 17px 4px 17px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .topHeadline {
+                font-size: 16pt !important;
+                line-height: 18pt !important;
+                font-family: Georgia !important;
+                color: #333 !important;
+            }
+            .topHeadline a {
+                color: #333 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+                display: block !important;
+            }
+            .subhead {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+            }
+            .dotsSeparator {
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+            }
+            .textPadding {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+            .videoPlayCTA {
+            }
+            .videoImageLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Arial !important;
+                display: block !important;
+            }
+        }
+        @media all and (min-width: 651px) {
+            .whiteBorder {
+                /*  width: 0 !important;
+                  font-size: 0 !important;*/
+
+                display:none !important;
+            }
+            .openInBrowserGap {
+                height: 38px !important;
+                font-size: 38px !important;
+                line-height: 38px !important;
+                padding: 0 !important;
+            }
+            /**[class="contentPadding"] {
+              width: 45px !important;
+            }*/
+            .bottomContentPadding {
+                height: 43px !important;
+                font-size: 43px !important;
+                line-height: 43px !important;
+                padding: 0 !important;
+            }
+            .otherHeadlines {
+                font-size: 16pt !important;
+                line-height: 18pt !important;
+                color: #505050 !important;
+                font-family: Georgia !important;
+            }
+            .otherHeadlines a, .otherHeadlinesLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+            }
+            .ft-logo {
+                font-size: 40pt !important;
+                line-height: 40pt !important;
+                height: 40pt !important;
+                text-align: center !important;
+                font-family: Georgia !important;
+            }
+            #ft-logo-img {
+                *width: 480px !important;
+                _width: 480px !important;
+                width: 90% !important;
+                max-width: 480px !important;
+            }
+            .ft-logo-briefing {
+                font-size: 2px !important;
+                line-height: 2px !important;
+                height: 2px !important;
+            }
+            .ft-desc {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+                text-align: center !important;
+                font-weight: bold !important;
+            }
+            .ft-header-bar {
+                color: #333333 !important;
+                background-color: #E9DECE !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                padding: 5px 17px 4px 17px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .ft-header-bar-follow {
+                color: #9b9491 !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                /*padding: 5px 0px 4px 0px !important;*/
+                padding: 5px 17px 4px 20px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .topHeadline {
+                font-size: 21pt !important;
+                line-height: 23pt !important;
+                font-family: Georgia !important;
+                color: #333 !important;
+            }
+            .topHeadline a {
+                color: #333 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+            }
+            .subhead {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+            }
+            .dotsSeparator {
+                margin-left: 17px !important;
+                margin-right: 17px !important;
+            }
+            .textPadding {
+                padding-left: 17px !important;
+                padding-right: 17px !important;
+            }
+            .videoPlayCTA {
+            }
+            .videoImageLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Arial !important;
+            }
+        }
+        @media all and (min-width: 720px) {
+            .wrapperInner, .containerTable {
+                width: 720px !important;
+            }
+        }
+        @media all and (min-width: 451px) and (max-width: 650px) {
+            .wrapperInner, .containerTable {
+                max-width: 720px !important;
+                *width: 720px !important;
+                _width: 720px !important;
+            }
+            .whiteBorder {
+                width: 1% !important;
+            }
+            .openInBrowserGap {
+                height: 23px !important;
+                font-size: 23px !important;
+                line-height: 23px !important;
+                padding: 0 !important;
+            }
+            .contentPadding {
+                width: 3% !important;
+            }
+            .bottomContentPadding {
+                height: 28px !important;
+                font-size: 28px !important;
+                line-height: 28px !important;
+                padding: 0 !important;
+            }
+            .otherHeadlines {
+                font-size: 13pt !important;
+                line-height: 16pt !important;
+                color: #505050 !important;
+                font-family: Georgia !important;
+            }
+            .otherHeadlines a, .otherHeadlinesLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+            }
+            .ft-logo {
+                font-size: 32pt !important;
+                line-height: 32pt !important;
+                height: 32pt !important;
+                text-align: center !important;
+                font-family: Georgia !important;
+            }
+            #ft-logo-img {
+                *width: 440px !important;
+                _width: 440px !important;
+                width: 80% !important;
+                max-width: 440px !important;
+            }
+            .ft-logo-briefing {
+                font-size: 4px !important;
+                line-height: 4px !important;
+                height: 4px !important;
+            }
+            .ft-desc {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+                text-align: center !important;
+                font-weight: bold !important;
+            }
+            .ft-header-bar {
+                color: #333333 !important;
+                background-color: #E9DECE !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                padding: 5px 17px 4px 17px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .ft-header-bar-follow {
+                color: #9b9491 !important;
+                font-size: 10pt !important;
+                font-weight: bold !important;
+                /*padding: 5px 0px 4px 0px !important;*/
+                padding: 5px 17px 4px 17px !important;
+                text-transform: uppercase !important;
+                font-family: Arial !important;
+                width: 100% !important;
+            }
+            .topHeadline {
+                font-size: 17pt !important;
+                line-height: 19pt !important;
+                font-family: Georgia !important;
+                color: #333 !important;
+            }
+            .topHeadline a {
+                color: #333 !important;
+                text-decoration: none !important;
+                font-family: Georgia !important;
+            }
+            .subhead {
+                font-size: 10pt !important;
+                line-height: 12pt !important;
+                font-family: Arial !important;
+                color: #505050 !important;
+            }
+            .dotsSeparator {
+                margin-left: 17px !important;
+                margin-right: 17px !important;
+            }
+            .textPadding {
+                padding-left: 17px !important;
+                padding-right: 17px !important;
+            }
+            .videoPlayCTA {
+            }
+            .videoImageLink {
+                color: #505050 !important;
+                text-decoration: none !important;
+                font-family: Arial !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="width: 100%; color: #000001; background-color: #ffffff; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 12pt;">
+    <div id="wrapper" style="margin: 0 auto; text-align: center;">
+        <table border="0" cellspacing="0" cellpadding="0" class="wrapperInner" style="margin: 0 auto; max-width: 720px; *width: 720px; _width: 720px;" align="center">
+            <tr>
+                <td>
+                    <table border="0" width="720" cellspacing="0" cellpadding="0" class="containerTable" style="background-color:#ffffff; display: table; margin: 0 auto; text-align: center; max-width: 720px;" align="center">
+                        <tr>
+                            <td style="max-width: 720px;">
+                                <table border="0" cellspacing="0" cellpadding="0" width="100%" align="left" style="text-align: left;">
+                                    <tr>
+                                        <td class="mainCol">
+                                            <table border="0" cellspacing="0" cellpadding="0" style="background-color: #FFF1E0; border: 2px solid #f7f7f7; text-align: left;" width="100%" align="left">
+                                                <tr>
+                                                    <td style="height: 3px; font-size: 3px; line-height: 3px; padding: 0;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 23px; font-size: 23px; line-height: 23px; padding: 0;" class="openInBrowserGap">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 10px; padding-right: 10px;">
+                                                        <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;">
+                                                            <tr>
+                                                                <td class="ft-logo" style="font-size:32pt;line-height:32pt;height:32pt;text-align:center;font-family:Georgia; width: 100%;"> <a href="http://www.ft.com?ftcamp=crm/email/follow/author//product" target="_blank"> <img id="ft-logo-img" src="http://ftemail.herokuapp.com/images/singlelayout/ft-logo.png" style="width: 80%; max-width: 440px; max-height: 40px; font-size: 22pt; color: #091523; border: 0 none;" alt="FINANCIAL TIMES" title="FINANCIAL TIMES" /> </a> </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="font-size:4px;line-height:4px;height:4px;" class="ft-logo-briefing">&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ft-desc" style="font-size:10pt;line-height:12pt;font-family:Arial;color:#505050;text-align:center;font-weight:bold;">
+                                                                    {{date}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px; font-size: 10px; line-height: 10px; padding: 0;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 10px; padding-right: 10px;width:100%!important; min-width:100%!important;">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%!important; min-width:100%!important;">
+                                                            <tr>
+                                                                <td align="left" valign="top" bgcolor="#E9DECE" style="font-family: Arial; font-weight: bold; color: #333333; font-size: 12pt;padding:5px 17px 4px 17px;text-transform:uppercase; width:100%!important; min-width:100%!important;">
+                                                                    {{title}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px; font-size: 10px; line-height: 10px; padding: 0;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        {{#each userData}}
+                                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td valign="top" align="left">
+                                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                                            <tbody>
+                                                                            <tr>
+                                                                                <td class="contentPadding" style="height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                <td class="ft-header-bar-follow" style="color: #9b9491; font-size: 10pt; font-weight: bold; text-transform: uppercase; font-family: Arial; padding-left: 17px; padding-right:17px;padding-top:5px;padding-bottom: 4px;width:94%!important;display:block;">{{authorName}}<br />
+                                                                                </td>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                <td style="height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                                                            <tbody>
+                                                                            {{#each articles}}
+                                                                                <tr>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td style="height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td style="font-size: 17pt; line-height: 19pt; font-family: Georgia; color: #333333; padding-left: 17px; padding-right: 17px;" class="topHeadline"> <a style="color: #333333; text-decoration: none; font-family: Georgia;" class="topHeadlineLink" href="{{url}}">{{title}}<br />
+                                                                                    </a></td>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td style="height: 10px; font-size: 10px; line-height: 10px; padding: 0px;">&nbsp;</td>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td style="font-size: 10pt; line-height: 12pt; font-family: Arial; color: #505050; padding-left: 17px; padding-right: 17px;" class="subhead">{{summary}}</td>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                    <td style="height: 22px; font-size: 22px; line-height: 22px; padding: 0px;">&nbsp;</td>
+                                                                                    <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                </tr>
+                                                                            {{/each}}
+                                                                            <tr>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                <td width="100%" style="width:100%!important;min-width:100%!important;">
+                                                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%!important;min-width:100%!important;">
+                                                                                        <tbody>
+                                                                                        <tr style="float: right;">
+                                                                                            <td align="right" style="text-align:right;width:100%;min-width:100%;padding-right:17px;"><a href="{{stopAlertLink}}" style="font-size: 10pt; line-height: 12pt; font-family: Arial; color: #2e6e9e; text-decoration: none;">Stop alerts for this author</a></td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td width="100%" style="width:100%;padding-right:17px;padding-left:17px;">
+                                                                                                <div class="dotsSeparator" style="height: 10px; font-size: 10px; line-height: 10px; padding: 0px;border-bottom: 1px dotted #c0c0c0;min-width:100%;margin: 0!important;">
+                                                                                                    &nbsp;
+                                                                                                </div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                                <td style="height: 22px; font-size: 22px; line-height: 22px; padding: 0px;">&nbsp;</td>
+                                                                                <td class="contentPadding" style="width: 3%; height: 4px; font-size: 4px; line-height: 4px; padding: 0px;">&nbsp;</td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            {{{showad}}}
+                                                        {{/each}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px; font-size: 10px; line-height: 10px; padding: 0;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 10px; padding-right: 10px;">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 10px; font-size: 10px; line-height: 10px; padding: 0;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" width="100%" style="width:100%!important;min-width:100%!important;">
+                                                        <!--Footer Start-->
+                                                        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%!important; min-width:100%!important;">
+                                                            <tr>
+                                                                <td style="padding: 0 12px 6px 12px; width: 100%;">
+                                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%!important; min-width:100%!important;">
+                                                                        <tr>
+                                                                            <td style="width: 50%; background-color: #F6E8D7; padding: 6px 8px; border-radius: 2px;" valign="middle">
+                                                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                                                    <tr>
+                                                                                        <td style="line-height: 10pt;"> <a href="mailto:nbefeedback@ft.com?subject=Financial%20Times%20-%20News%20by%20Email%20Feedback&amp;body=Please%20leave%20your%20comment%20below.%0A%0A%0APlease%20also%20tell%20us...%0A%0AWhat%20device%20you%27re%20reading%20email%20on%3A%0A%0AWhat%20do%20you%20like%20about%20the%20FT%20News%20by%20Email%20service%3F%0A%0AWhat%20can%20we%20improve%3F%0A%0A%0AWe%20value%20your%20feedback%20and%20will%20consider%20your%20input%20for%20product%20improvement.%20For%20technical%20support%20please%20contact%20help%40ft.com.%0A" style="text-decoration: none; font-family: Arial;"> <img src="http://ftemail.herokuapp.com/images/singlelayout/icons/feedback.png" alt="" style="width: 26px; height: 26px; border: 0 none;" /> </a> </td>
+                                                                                        <td style="padding-left: 5px; color: #2E6E9E; font-family: Arial; line-height: 10pt;"> <a href="mailto:nbefeedback@ft.com?subject=Financial%20Times%20-%20Author%20Alerts%20Feedback&amp;body=Please%20leave%20your%20comment%20below.%0A%0A%0APlease%20also%20tell%20us...%0A%0AWhat%20device%20you%27re%20reading%20email%20on%3A%0A%0AWhat%20do%20you%20like%20about%20the%20FT%20News%20by%20Email%20service%3F%0A%0AWhat%20can%20we%20improve%3F%0A%0A%0AWe%20value%20your%20feedback%20and%20will%20consider%20your%20input%20for%20product%20improvement.%20For%20technical%20support%20please%20contact%20help%40ft.com.%0A" style="text-decoration: none; font-size: 9pt; line-height: 10pt; font-family: Arial; color: #2E6E9E;">Feedback</a> </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                            <td style="width: 7px; height: 100%;">&nbsp;&nbsp;</td>
+                                                                            <td style="width: 50%; background-color: #F6E8D7; padding: 6px 8px; border-radius: 2px;" valign="middle">
+                                                                                <table border="0" cellpadding="0" cellspacing="0">
+                                                                                    <tr>
+                                                                                        <td style="line-height: 10pt;"> <a href="http://markets.ft.com/portfolio/all.asp?ftcamp=crm/email/follow/author//product" style="text-decoration: none; font-family: Arial;" target="_blank"> <img src="http://ftemail.herokuapp.com/images/singlelayout/icons/portfolio.png" alt="" style="width: 26px; height: 26px; border: 0 none;" /> </a> </td>
+                                                                                        <td style="padding-left: 5px; color: #2E6E9E; font-family: Arial; line-height: 10pt;"> <a href="http://markets.ft.com/portfolio/all.asp?ftcamp=crm/email/follow/author//product" style="text-decoration: none; font-size: 9pt; line-height: 10pt; font-family: Arial; color: #2E6E9E;" target="_blank">Manage portfolio</a> </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+                                                                        <tr>
+                                                                            <td style="height: 7px; font-size: 7px; line-height: 7px; padding: 0;">&nbsp;</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="width: 100%!important; min-width:100%!important;">
+                                                                        <tr>
+                                                                            <td style="background-color: #F6E8D7; padding: 6px 8px; text-align: center; width:100%!important; min-width:100%!important;"> <a href="http://www.ft.com/cms/782b3c3e-e239-11dd-b1dd-0000779fd2ac.html?pspId=0001&amp;segid=70366&ftcamp=crm/email/follow/author//product" style="text-decoration: none; color: #2E6E9E; font-size: 9pt; font-family: Arial" target="_blank">Subscribe to the FT</a> </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+                                                                        <tr>
+                                                                            <td style="height: 7px; font-size: 7px; line-height: 7px; padding: 0;">&nbsp;</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <table border="0" cellpadding="0" cellspacing="0" style="width: 100%!important; min-width:100%!important; border-top: 1px dotted #C0C0C0; border-bottom: 1px dotted #C0C0C0;">
+                                                                        <tr>
+                                                                            <td align="center" style="padding: 4px 0;">
+                                                                                <table border="0" cellpadding="0" cellspacing="0" align="center">
+                                                                                    <tr>
+                                                                                        <td valign="middle" align="center"> <span style="font-size: 9pt; color: #505050; font-family: Arial">Follow us on</span> </td>
+                                                                                        <td style="padding-left: 10px;">
+                                                                                            <table border="0" cellpadding="0" cellspacing="0" align="center" valign="middle" style="width: 160px;">
+                                                                                                <tr>
+                                                                                                    <td> <a href="https://twitter.com/financialtimes" style="text-decoration: none; display: block;padding:8px;" target="_blank"><img src="http://ftemail.herokuapp.com/images/singlelayout/tw.png" style="border: 0 none; display: block;" height="24" width="24" alt="twitter"/></a> </td>
+                                                                                                    <td> <a href="https://www.facebook.com/financialtimes" style="text-decoration: none; display: block;padding:8px;" target="_blank"><img src="http://ftemail.herokuapp.com/images/singlelayout/fb.png" style="border: 0 none; display: block;" height="24" width="24" alt="facebook"/></a> </td>
+                                                                                                    <td> <a href="https://plus.google.com/+FinancialTimes/posts" style="text-decoration: none; display: block;padding:8px;" target="_blank"><img src="http://ftemail.herokuapp.com/images/singlelayout/gplus.png" style="border: 0 none; display: block;" height="24" width="24" alt="google plus"/></a> </td>
+                                                                                                    <td> <a href="http://www.linkedin.com/company/financial-times" style="text-decoration: none; display: block;padding:8px;" target="_blank"><img src="http://ftemail.herokuapp.com/images/singlelayout/likd.png" style="border: 0 none; display: block;" height="24" width="24" alt="linkedin"/></a> </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="height: 22px; font-size: 22px; line-height: 22px; padding: 0;">&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ft-email-bar" style="text-align: center;font-size: 9pt;line-height: 13pt;font-family: Arial;color: #98948F;"> <a style="text-decoration: none;color: #98948F;" href="http://www.ft.com/thirdpartywrapper/unsubscribe?all=true&ftcamp=crm/email/follow/author//product" target="_blank">Unsubscribe</a> | <a style="text-decoration: none;color: #98948F;" href="https://registration.ft.com/youraccount/details/core/view?ftcamp=crm/email/follow/author//product" target="_blank">My Account</a> | <a style="text-decoration: none;color: #98948F;" href="http://www.ft.com/servicestools/newstracking/rss?ftcamp=crm/email/follow/author//product" target="_blank">RSS</a> | <a style="text-decoration: none;color: #98948F;" href="http://www.ft.com/servicestools/help/privacy?ftcamp=crm/email/follow/author//product" target="_blank">Privacy Policy</a> | <a style="text-decoration: none;color: #98948F;" href="http://aboutus.ft.com/?ftcamp=crm/email/follow/author//product" target="_blank">About Us</a> | <a style="text-decoration: none;color: #98948F;" href="http://help.ft.com/?ftcamp=crm/email/follow/author//product" target="_blank">Help</a> </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="height: 34px; font-size: 34px; line-height: 34px; padding: 0;">&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ft-copyright" style="font-size: 9pt;line-height: 13pt;padding: 5px 5px 0 5px;text-align: center;color: #505050;"> &copy; THE FINANCIAL TIMES LTD {{year}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="ft-copyright2 applelinks" style="font-size: 9px;line-height: 11pt;padding: 0 5px 5px 5px;text-align: center;color: #505050;"> You have received this email because you have signed up from the NBE preference page.<br/>
+                                                                    This email was sent by a company owned by Financial Times Group Limited (FT Group), registered office at Number One Southwark Bridge, London SE1 9HL.<br/>
+                                                                    Registered in England and Wales with company number 879531.<br/>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <!--Footer End-->
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height: 28px; font-size: 28px; line-height: 28px; padding: 0;" class="bottomContentPadding">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
