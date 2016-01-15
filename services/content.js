@@ -5,15 +5,16 @@ const env = require('../env');
 
 const errPrefix = '[contentApi]:';
 
-const parseContentResult = (resObj) => {
+const parseContentResult = (resObj, taxonomyId) => {
 	if ( resObj.length && resObj[0].indexCount ) {
 		return resObj[0].results.reduce((ret, item) => {
 			ret.push({
-				_id: item.id,
+				articleId: item.id,
 				title: item.title.title,
 				url: item.location.uri,
 				publishDate: item.lifecycle.initialPublishDateTime,
-				summary: item.summary.excerpt
+				summary: item.summary.excerpt,
+				authorId: taxonomyId
 			});
 			return ret;
 		}, []);
@@ -48,7 +49,7 @@ exports.getArticles = (taxonomyId, newerThan) => {
 			if ( error || response.statusCode !== 200 ) {
 				return reject(errPrefix + (error || body.message || body));
 			}
-			return resolve(parseContentResult(body.results));
+			return resolve(parseContentResult(body.results, taxonomyId));
 		});
 	});
 };
