@@ -2,35 +2,38 @@
 
 const Promise = require('bluebird');
 const mongoose = Promise.promisifyAll(require('mongoose'));
-const _ = require('lodash');
 const moment = require('moment');
 const contentApi = require('../services/content');
 
-const dateFormat = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
+const dateFormat = require('../env').dateFormat;
 
 require('../models');
 const UserSubscription = mongoose.model('UserSubscription');
-const Author = mongoose.model('Author');
+const Article = mongoose.model('Article');
 
 const getAuthorsIds = () => {
-	return UserSubscription.distinct('subscriptions._id').execAsync();
+	return UserSubscription.distinct('taxonomyId').execAsync();
+};
+
+const insertArticle = (article) => {
+	return Article.update({
+		articleId: article.articleId,
+		authorId: article.authorId,
+		publishDate: article.publishDate
+	}, article, {upsert: true}).execAsync();
 };
 
 const handleAuthorContent = (authorId) => {
-	return Author.findById(authorId).exec().then(author => {
-		let afterDate = moment().subtract(2, 'days').format(dateFormat);
-		if ( author ) {
-			let mostRecentIndex = author.articles.length - 1;
-			afterDate = moment(author.articles[mostRecentIndex].publishDate).format(dateFormat);
+	return Article.find({authorId: authorId}).sort({publishDate: 'desc'}).limit(1).execAsync().then(article => {
+		let afterDate = moment().subtract(1, 'days').format(dateFormat);
+		if ( article.length ) {
+			afterDate = moment(article.publishDate).format(dateFormat);
 		}
 		return contentApi.getArticles(authorId, afterDate).then(articles => {
 			if (articles.length) {
-				let articlesToAdd = _.sortBy(articles, 'publishDate');
-				let authorItem = {
-					_id: authorId
-				};
-				return Author.update(authorItem, {$addToSet: {articles: {$each: articlesToAdd, $sort: {publishDate: 1}}}}, {upsert: true}).execAsync();
+				return Promise.all(articles.map(insertArticle));
 			}
+			return Promise.resolve([]);
 		});
 	});
 };
@@ -38,7 +41,9 @@ const handleAuthorContent = (authorId) => {
 const getContent = () => {
 	getAuthorsIds().then(authorsIds => {
 		return Promise.all(authorsIds.map(handleAuthorContent));
-	}).catch(console.log).finally(() => setTimeout(getContent, 300000));
+	}).finally(() => {
+		setTimeout(getContent, 300000);
+	});
 };
 
 require('../services/db').connect(getContent);
