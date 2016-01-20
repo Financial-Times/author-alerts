@@ -82,11 +82,16 @@ exports.getSubject = (userData) => {
 	const singular = 'article';
 	const plural = 'articles';
 	let articleNoun = singular;
+	let postfix = '';
 	let authors = userData.map(item => item.authorName);
 	if ( userData.length > 1 || authors.length > 1 ) {
 		articleNoun = plural;
 	}
 	if ( authors.length ) {
-		return `New ${articleNoun} by ${authors.join(', ')}`;
+		if (authors.length > 3) {
+			authors = authors.slice(0, 3);
+			postfix = '...';
+		}
+		return `New ${articleNoun} by ${authors.join(', ')}${postfix}`;
 	}
 };
