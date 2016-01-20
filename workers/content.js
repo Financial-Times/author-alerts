@@ -24,9 +24,9 @@ const insertArticle = (article) => {
 };
 
 const handleAuthorContent = (authorId) => {
-	return Article.find({authorId: authorId}).sort({publishDate: -1}).limit(1).execAsync().then(article => {
+	return Article.findOne({authorId: authorId}).sort({publishDate: -1}).limit(1).execAsync().then(article => {
 		let afterDate = moment().subtract(1, 'days').format(dateFormat);
-		if ( article.length ) {
+		if ( article ) {
 			afterDate = moment(article.publishDate).format(dateFormat);
 		}
 		return contentApi.getArticles(authorId, afterDate).then(articles => {
@@ -38,10 +38,11 @@ const handleAuthorContent = (authorId) => {
 	});
 };
 
+/*eslint-disable no-console */
 const getContent = () => {
 	getAuthorsIds().then(authorsIds => {
 		return Promise.all(authorsIds.map(handleAuthorContent));
-	}).finally(() => {
+	}).catch(console.log).finally(() => {
 		setTimeout(getContent, 300000);
 	});
 };
