@@ -24,7 +24,7 @@ const insertArticle = (article) => {
 };
 
 const handleAuthorContent = (authorId) => {
-	return Article.find({authorId: authorId}).sort({publishDate: 'desc'}).limit(1).execAsync().then(article => {
+	return Article.find({authorId: authorId}).sort({publishDate: -1}).limit(1).execAsync().then(article => {
 		let afterDate = moment().subtract(1, 'days').format(dateFormat);
 		if ( article.length ) {
 			afterDate = moment(article.publishDate).format(dateFormat);
