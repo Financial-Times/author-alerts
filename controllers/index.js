@@ -36,7 +36,7 @@ exports.validate = (req, res, next) => {
 	let subscriptionParam = params.follow || params.unfollow;
 
 	if (!sessionId) {
-		return res.end('No session id found.');
+		return res.end(env.errors.sessionIdRequired);
 	}
 
 	if (subscriptionParam) {
@@ -44,7 +44,7 @@ exports.validate = (req, res, next) => {
 	}
 
 	if (_.isEmpty(subscriptions)) {
-		return res.end('No parameters found.');
+		return res.end(env.errors.noParameters);
 	}
 
 	req.subscriptions = subscriptions;
@@ -94,7 +94,7 @@ exports.unfollow = (req, res) => {
 exports.users = (req, res) => {
 	let params = req.query;
 	if ( !params.hasOwnProperty('id') ) {
-		return res.end(`'id' parameter is required.`);
+		return res.end(env.errors.idParameterRequired);
 	}
 	UserSubscription.find({
 		taxonomyId: params['id']
