@@ -7,7 +7,7 @@ const errPrefix = '[sessionApi]:';
 
 const getUserData = (sessionId) => {
 	if ( !sessionId ) {
-		return Promise.reject(new Error('A valid session id must be provided.'));
+		return Promise.reject(new Error(env.errors.sessionIdRequired));
 	}
 	let options = {
 		url: env.sessionApi.url + sessionId,
