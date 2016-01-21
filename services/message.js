@@ -32,6 +32,13 @@ const getLastSentDateForUser = (user, logModel) => {
 	).execAsync();
 };
 
+const countArticles = (articleList) => {
+	return articleList.reduce((tally, item) => {
+		tally += item.articles.length;
+		return tally;
+	}, 0);
+};
+
 exports.template = template;
 
 exports.resetAuthorIndex = () => {
@@ -84,7 +91,8 @@ exports.getSubject = (userData) => {
 	let articleNoun = singular;
 	let postfix = '';
 	let authors = userData.map(item => item.authorName);
-	if ( userData.length > 1 || authors.length > 1 ) {
+	let articlesNumber = countArticles(userData);
+	if ( authors.length > 1 || articlesNumber > 1) {
 		articleNoun = plural;
 	}
 	if ( authors.length ) {
