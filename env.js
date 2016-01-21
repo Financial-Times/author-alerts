@@ -2,6 +2,11 @@
 
 const config = {
 	dateFormat: 'YYYY-MM-DD[T]HH:mm:ss[Z]',
+	errors: {
+		sessionIdRequired: 'A valid session id must be provided.',
+		noParameters: 'No parameters found.',
+		idParameterRequired: `'id' parameter is required.`
+	},
 	sessionApi: {
 		url: process.env['SESSION_API_URL'],
 		key: process.env['SESSION_API_KEY']
