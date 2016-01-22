@@ -2,15 +2,14 @@
 
 const Promise = require('bluebird');
 const mongoose = Promise.promisifyAll(require('mongoose'));
-const moment = require('moment');
 const sendmail = require('../services/sendmail');
+const Statistics = require('../services/statistics');
 
 require('../models');
 
 const UserSubscription = mongoose.model('UserSubscription');
 const DailyLog = mongoose.model('DailyLog');
-
-let startDate = moment();
+const StatsModel = mongoose.model('Statistic');
 
 const getDailyUserSubscriptions = () => {
 	return UserSubscription.aggregate([
@@ -34,12 +33,14 @@ const getDailyUserSubscriptions = () => {
 
 /*eslint-disable no-console */
 require('../services/db').connect(() => {
+	let stats = new Statistics('daily', StatsModel);
+	stats.start();
 	getDailyUserSubscriptions()
 		.then(list => {
-			return sendmail.processUserList(list, DailyLog, startDate);
+			return sendmail.processUserList(list, DailyLog, stats);
 		}).finally(() => {
-			sendmail.setStatsEndTime();
-			console.log(sendmail.getStats());
-			mongoose.connection.close();
+			stats.end();
+			stats.save(() => mongoose.connection.close());
+			console.log(stats.get());
 		});
 });

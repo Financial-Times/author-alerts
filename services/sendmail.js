@@ -8,6 +8,7 @@ const mailer = require('./mailer');
 
 let logModel = null;
 let startDate = null;
+let stats = null;
 
 const addSuccessLog = (log, userId) => {
 	return logModel.update(
@@ -32,13 +33,6 @@ const addFailedLog = (log, userId) => {
 	return item.saveAsync();
 };
 
-const stats = {
-	startTime: 0,
-	endTime: 0,
-	sent: 0,
-	failed: 0
-};
-
 const handleUser = (user) => {
 	/** see the aggregate method in the worker **/
 	let userId = user._id;
@@ -57,27 +51,21 @@ const handleUser = (user) => {
 			messageService.resetAuthorIndex();
 			messageService.manageAd(Object.keys(userData).length);
 			let htmlBody = messageService.template(data);
-			return mailer.send(userId, subject, htmlBody)
+			return mailer.send(env.sendApi.testDestination, subject, htmlBody)
 				.then(res => {
-					stats.sent += 1;
+					stats.success();
 					return addSuccessLog(res, userId);
 				}).catch(err => {
-					stats.failed += 1;
+					stats.failed();
 					return addFailedLog(err, userId);
 				});
 		}
 	});
 };
 
-exports.getStats = () => stats;
-
-exports.setStatsEndTime = () => {
-	stats.endTime = moment().unix();
-};
-
-exports.processUserList = (userList, mailLogger, date) => {
+exports.processUserList = (userList, mailLogger, statsInstance) => {
 	logModel = mailLogger;
-	startDate = date;
-	stats.startTime = date.unix();
+	stats = statsInstance;
+	startDate = moment.unix(stats.get('startTime'));
 	return Promise.map(userList, handleUser, {concurrency: 100});
 };
