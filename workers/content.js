@@ -54,6 +54,7 @@ const getContent = () => {
 	}).catch(console.log).finally(() => {
 		stats.end();
 		stats.save(() => setTimeout(getContent, 300000));
+		console.log(JSON.stringify(stats.get()));
 	});
 };
 

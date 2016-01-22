@@ -41,6 +41,6 @@ require('../services/db').connect(() => {
 		}).finally(() => {
 			stats.end();
 			stats.save(() => mongoose.connection.close());
-			console.log(stats.get());
+			console.log(JSON.stringify(stats.get()));
 		});
 });
