@@ -5,7 +5,7 @@ const env = require('../env');
 
 const errPrefix = '[sendApi]:';
 
-exports.send = (to, subject, body) => {
+exports.send = (to, subject, body, textBody) => {
 	let requestOpts = {
 		method: 'POST',
 		url: env.sendApi.url,
@@ -26,7 +26,7 @@ exports.send = (to, subject, body) => {
 			},
 			subject: subject,
 			htmlContent: body,
-			plainTextContent: body
+			plainTextContent: textBody
 		}
 	};
 	return new Promise((resolve, reject) => {

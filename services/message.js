@@ -12,7 +12,8 @@ require('../models');
 
 const Article = mongoose.model('Article');
 
-let template = handlebars.compile(fs.readFileSync('./templates/email.hbs', 'utf8'));
+let htmlTemplate = handlebars.compile(fs.readFileSync('./templates/email.hbs', 'utf8'));
+let textTemplate = handlebars.compile(fs.readFileSync('./templates/textEmail.hbs', 'utf8'));
 let ad = fs.readFileSync('./templates/ad.html', 'utf8');
 let authorIndex = 0;
 
@@ -39,7 +40,10 @@ const countArticles = (articleList) => {
 	}, 0);
 };
 
-exports.template = template;
+exports.template = {
+	html: htmlTemplate,
+	text: textTemplate
+};
 
 exports.resetAuthorIndex = () => {
 	authorIndex = 0;

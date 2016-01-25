@@ -1,0 +1,14 @@
+http://www.ft.com?ftcamp=crm/email/follow/author//product
+\n
+{{date}}\n
+{{title}}\n\n
+{{#each userData}}
+    {{authorName}}\n
+    {{#each articles}}
+        {{title}}\n
+        {{url}}?ftcamp=crm/email/follow/author/{{authorId}}/product
+        \n
+        \t\t{{summary}}\n
+    {{/each}}
+    {{stopAlertLink}}\n\n
+{{/each}}
