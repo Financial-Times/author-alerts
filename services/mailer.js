@@ -26,7 +26,7 @@ exports.send = (to, subject, body, textBody) => {
 			},
 			subject: subject,
 			htmlContent: body,
-			plainTextContent: textBody
+			plainTextContent: textBody || body
 		}
 	};
 	return new Promise((resolve, reject) => {
