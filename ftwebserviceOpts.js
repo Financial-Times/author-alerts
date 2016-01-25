@@ -1,6 +1,13 @@
 'use strict';
 const path = require('path');
+const health = require('./health');
 
+const gtgReducer = (res, item) => {
+	if(item.ok === false) {
+		res = false;
+	}
+	return res;
+};
 module.exports = {
 	manifestPath: path.join(__dirname, 'package.json'),
 	about: {
@@ -8,9 +15,9 @@ module.exports = {
 		name: 'author-alerts'
 	},
 	goodToGoTest() {
-		return Promise.resolve('test');
+		return health.check().then(r => r.reduce(gtgReducer, true));
 	},
 	healthCheck() {
-		return Promise.resolve(['test1', 'test2']);
+		return health.check();
 	}
 };
