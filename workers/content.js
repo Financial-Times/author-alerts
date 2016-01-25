@@ -51,7 +51,7 @@ const getContent = () => {
 	stats.start();
 	getAuthorsIds().then(authorsIds => {
 		return Promise.all(authorsIds.map(handleAuthorContent));
-	}).catch(console.log).finally(() => {
+	}).catch(stats.error).finally(() => {
 		stats.end();
 		stats.save(() => setTimeout(getContent, 300000));
 		console.log(JSON.stringify(stats.get()));

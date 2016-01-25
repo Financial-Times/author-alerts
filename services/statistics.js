@@ -34,6 +34,13 @@ class Statistics {
 		}
 		return this.statItem;
 	}
+	error(errorObject) {
+		try {
+			this.statItem.msg = JSON.stringify(errorObject);
+		} catch (err) {
+			this.statItem.msg = errorObject;
+		}
+	}
 	save(cb) {
 		return this.model.create(this.statItem, cb);
 	}

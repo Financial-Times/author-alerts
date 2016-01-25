@@ -38,7 +38,7 @@ require('../services/db').connect(() => {
 	getDailyUserSubscriptions()
 		.then(list => {
 			return sendmail.processUserList(list, DailyLog, stats);
-		}).finally(() => {
+		}).catch(stats.error).finally(() => {
 			stats.end();
 			stats.save(() => mongoose.connection.close());
 			console.log(JSON.stringify(stats.get()));
