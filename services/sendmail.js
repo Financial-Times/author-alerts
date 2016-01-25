@@ -51,7 +51,7 @@ const handleUser = (user) => {
 			messageService.resetAuthorIndex();
 			messageService.manageAd(Object.keys(userData).length);
 			let htmlBody = messageService.template(data);
-			return mailer.send(env.sendApi.testDestination, subject, htmlBody)
+			return mailer.send(userId, subject, htmlBody)
 				.then(res => {
 					stats.success();
 					return addSuccessLog(res, userId);
