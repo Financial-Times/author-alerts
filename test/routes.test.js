@@ -43,7 +43,10 @@ describe('api routes', () => {
 					if(err) {
 						return done(err);
 					}
-					expect(res.text).toEqual('done');
+					expect(res.body).toBeAn(Object);
+					expect(res.body.status).toExist();
+					expect(res.body.status).toEqual('success');
+					expect(res.body.taxonomies).toBeAn(Array);
 					return done();
 				});
 		});
@@ -142,7 +145,10 @@ describe('api routes', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(res.text).toEqual('done');
+					expect(res.body).toBeAn(Object);
+					expect(res.body.status).toExist();
+					expect(res.body.status).toEqual('success');
+					expect(res.body.taxonomies).toBeAn(Array);
 					return done();
 				});
 		});
