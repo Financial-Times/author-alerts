@@ -18,19 +18,23 @@ const createSubscriptionItem = (parts) => {
 		return item;
 	}, {});
 };
+
 const extractSubscriptionItems = (paramsList) => {
 	return paramsList.map(createSubscriptionItem);
 };
 
 const getTaxonomies = (list) => {
-	return list.map(item => {
-		return {
-			id: item.taxonomyId,
-			name: item.taxonomyName,
-			type: 'authors',
-			frequency: item.immediate ? 'immediate' : 'daily'
-		};
-	});
+	if (list.length) {
+		return list.map(item => {
+			return {
+				id: item.taxonomyId,
+				name: item.taxonomyName,
+				type: 'authors',
+				frequency: item.immediate ? 'immediate' : 'daily'
+			};
+		});
+	}
+	return [];
 };
 
 const taxonomiesForUser = (userId) => {
@@ -51,26 +55,28 @@ const handleError = (error, res) => {
 };
 /*eslint-enable no-console */
 
-exports.validate = (req, res, next) => {
+exports.validateSession = (req, res, next) => {
 	let sessionId = req.cookies['FTSession'];
+	if (!sessionId) {
+		return res.end(env.errors.sessionIdRequired);
+	}
+	req.sessionId = sessionId;
+	next();
+};
+
+exports.validateParams = (req, res, next) => {
 	let params = req.query;
 	let subscriptions = null;
 	let subscriptionParam = params.follow || params.unfollow;
 
-	if (!sessionId) {
-		return res.end(env.errors.sessionIdRequired);
-	}
-
 	if (subscriptionParam) {
 		subscriptions = extractSubscriptionItems([].concat(subscriptionParam));
 	}
-
 	if (_.isEmpty(subscriptions)) {
 		return res.end(env.errors.noParameters);
 	}
 
 	req.subscriptions = subscriptions;
-	req.sessionId = sessionId;
 	next();
 };
 
@@ -92,6 +98,21 @@ exports.follow = (req, res) => {
 					taxonomyId: subscription.taxonomyId
 				}, userSubscriptionItem, {upsert: true}).execAsync();
 			}));
+		}).then(() => {
+			taxonomiesForUser(userId).then(data => res.jsonp(data));
+		}).catch((error) => {
+			handleError(error, res);
+		});
+};
+
+exports.unfollowAll = (req, res) => {
+	let userId = null;
+	sessionApi.getUserData(req.sessionId)
+		.then((userData) => {
+			userId = userData.uuid;
+			return UserSubscription.remove({
+				userId: userId
+			}).execAsync();
 		}).then(() => {
 			taxonomiesForUser(userId).then(data => res.jsonp(data));
 		}).catch((error) => {
