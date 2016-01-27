@@ -52,14 +52,15 @@ const handleUser = (user) => {
 			messageService.manageAd(Object.keys(userData).length);
 			let htmlBody = messageService.template.html(data);
 			let textBody = messageService.template.text(data);
-			return mailer.send(userId, subject, htmlBody, textBody)
-				.then(res => {
-					stats.success();
-					return addSuccessLog(res, userId);
-				}).catch(err => {
-					stats.failed();
-					return addFailedLog(err, userId);
-				});
+			console.log(textBody);
+			//return mailer.send(env.sendApi.testDestination, subject, htmlBody, textBody)
+			//	.then(res => {
+			//		stats.success();
+			//		return addSuccessLog(res, userId);
+			//	}).catch(err => {
+			//		stats.failed();
+			//		return addFailedLog(err, userId);
+			//	});
 		}
 	});
 };
