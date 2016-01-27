@@ -157,4 +157,38 @@ describe('api routes', () => {
 		});
 	});
 
+	describe('/unfollowall', () => {
+		let sessionServiceSpy = null;
+		before(() => {
+			sessionServiceSpy = expect.spyOn(sessionService, 'getUserData')
+				.andReturn(Promise.resolve({uuid: 'test-user-id'}));
+		});
+		it('should require a session id', (done) => {
+			request(app)
+				.get('/unfollowall')
+				.expect(200)
+				.expect(env.errors.sessionIdRequired, done);
+		});
+		it('should unsubscribe the user from all authors', (done) => {
+			request(app)
+				.get('/unfollowall')
+				.set('Cookie', ['FTSession=test-session'])
+				.expect(200)
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
+					expect(res.body).toBeAn(Object);
+					expect(res.body.status).toExist();
+					expect(res.body.status).toEqual('success');
+					expect(res.body.taxonomies).toBeAn(Array);
+					expect(res.body.taxonomies.length).toEqual(0);
+					return done();
+				});
+		});
+		after(() => {
+			sessionServiceSpy.restore();
+		});
+	});
+
 });
