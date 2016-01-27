@@ -43,7 +43,7 @@ const handleUser = (user) => {
 			let subject = messageService.getSubject(userData) || `New articles from FT`;
 			let now = moment();
 			let data = {
-				title: 'author alerts',
+				title: 'author alerts'.toUpperCase(),
 				date: now.format('dddd Do MMMM'),
 				year: now.format('YYYY'),
 				userData
@@ -52,15 +52,14 @@ const handleUser = (user) => {
 			messageService.manageAd(Object.keys(userData).length);
 			let htmlBody = messageService.template.html(data);
 			let textBody = messageService.template.text(data);
-			console.log(textBody);
-			//return mailer.send(env.sendApi.testDestination, subject, htmlBody, textBody)
-			//	.then(res => {
-			//		stats.success();
-			//		return addSuccessLog(res, userId);
-			//	}).catch(err => {
-			//		stats.failed();
-			//		return addFailedLog(err, userId);
-			//	});
+			return mailer.send(userId, subject, htmlBody, textBody)
+				.then(res => {
+					stats.success();
+					return addSuccessLog(res, userId);
+				}).catch(err => {
+					stats.failed();
+					return addFailedLog(err, userId);
+				});
 		}
 	});
 };
