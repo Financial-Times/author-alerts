@@ -18,16 +18,26 @@ const getWorkerStat = (type) => {
 
 module.exports = (type, delta, model) => {
 	return getWorkerStat(type).then(stat => {
+		if ( !stat ) {
+			_.extend(model, {
+				lastUpdated: moment().format(env.dateFormat),
+				checkOutput: 'No statistics found.'
+			});
+			return Promise.resolve(_.pick(model, ['name', 'ok', 'lastUpdated', 'checkOutput']));
+		}
+
 		let lastRun = parseInt(stat.endTime, 10);
 		_.extend(model, {
 			lastUpdated: moment.unix(lastRun).format(env.dateFormat)
 		});
-		if ( moment().unix() - lastRun >= delta ) {
+
+		if (moment().unix() - lastRun >= delta) {
 			_.extend(model, {
 				checkOutput: stat.msg
 			});
 			return Promise.resolve(_.pick(model, ['name', 'ok', 'lastUpdated', 'checkOutput']));
 		}
+
 		_.extend(model, {
 			ok: true
 		});
