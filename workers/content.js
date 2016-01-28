@@ -19,6 +19,7 @@ const getAuthorsIds = () => {
 	return UserSubscription.distinct('taxonomyId').execAsync();
 };
 
+/*eslint-disable no-console */
 const insertArticle = (article) => {
 	return Article.update({
 		articleId: article.articleId,
@@ -26,8 +27,10 @@ const insertArticle = (article) => {
 		publishDate: article.publishDate
 	}, article, {upsert: true}).execAsync().then(() => {
 		stats.success();
-	}).catch(() => {
+		return Promise.resolve(article);
+	}).catch(error => {
 		stats.failed();
+		console.log(JSON.stringify({error, article}));
 	});
 };
 
@@ -41,17 +44,19 @@ const handleAuthorContent = (authorId) => {
 			if (articles.length) {
 				return Promise.all(articles.map(insertArticle));
 			}
+		}).catch(error => {
+			console.log(JSON.stringify({error, authorId, afterDate}));
+			stats.failed();
 		});
 	});
 };
 
-/*eslint-disable no-console */
 const getContent = () => {
 	stats = new Statistics('content', StatsModel);
 	stats.start();
 	getAuthorsIds().then(authorsIds => {
 		return Promise.all(authorsIds.map(handleAuthorContent));
-	}).catch(stats.error).finally(() => {
+	}).catch(console.log).finally(() => {
 		stats.end();
 		stats.save(() => setTimeout(getContent, 300000));
 		console.log(JSON.stringify(stats.get()));
