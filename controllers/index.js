@@ -8,11 +8,6 @@ const mongoose = Promise.promisifyAll(require('mongoose'));
 const _ = require('lodash');
 
 const UserSubscription = mongoose.model('UserSubscription');
-let responseModel = {
-	status: 'success',
-	message: 'following list retrieved',
-	taxonomies: []
-};
 
 /** extract to helper **/
 const createSubscriptionItem = (parts) => {
@@ -46,11 +41,17 @@ const taxonomiesForUser = (userId) => {
 	return UserSubscription.find({userId: userId}).execAsync()
 		.then(subscriptions => {
 			if (subscriptions.length) {
-				responseModel.taxonomies = getTaxonomies(subscriptions);
-				return responseModel;
+				return {
+					status: 'success',
+					message: 'following list retrieved',
+					taxonomies: getTaxonomies(subscriptions)
+				};
 			}
-			responseModel.message = 'user has no following list';
-			return responseModel;
+			return {
+				status: 'success',
+				message: 'user has no following list',
+				taxonomies: []
+			};
 		});
 };
 

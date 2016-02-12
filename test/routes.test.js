@@ -110,6 +110,38 @@ describe('api routes', () => {
 		});
 	});
 
+	describe('/subscriptions', () => {
+		let sessionServiceSpy = null;
+		before(() => {
+			sessionServiceSpy = expect.spyOn(sessionService, 'getUserData')
+				.andReturn(Promise.resolve({uuid: 'test-user-id'}));
+		});
+		it('should require a session id', (done) => {
+			request(app)
+				.get('/subscriptions')
+				.expect(200)
+				.expect(env.errors.sessionIdRequired, done);
+		});
+		it('should find authors that a user is subscribed to', (done) => {
+			request(app)
+				.get('/subscriptions')
+				.set('Cookie', ['FTSession=test-session'])
+				.expect(200)
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
+					expect(res.body).toExist().toBeAn(Object);
+					expect(res.body.taxonomies).toBeAn(Array);
+					expect(res.body.taxonomies.length).toEqual(3);
+					return done();
+				});
+		});
+		after(() => {
+			sessionServiceSpy.restore();
+		});
+	});
+
 	describe('/unfollow', () => {
 		let sessionServiceSpy = null;
 		before(() => {
