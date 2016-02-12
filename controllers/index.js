@@ -8,6 +8,11 @@ const mongoose = Promise.promisifyAll(require('mongoose'));
 const _ = require('lodash');
 
 const UserSubscription = mongoose.model('UserSubscription');
+let responseModel = {
+	status: 'success',
+	message: 'following list retrieved',
+	taxonomies: []
+};
 
 /** extract to helper **/
 const createSubscriptionItem = (parts) => {
@@ -40,11 +45,12 @@ const getTaxonomies = (list) => {
 const taxonomiesForUser = (userId) => {
 	return UserSubscription.find({userId: userId}).execAsync()
 		.then(subscriptions => {
-			return {
-				status: 'success',
-				message: 'following list retrieved',
-				taxonomies: getTaxonomies(subscriptions)
-			};
+			if (subscriptions.length) {
+				responseModel.taxonomies = getTaxonomies(subscriptions);
+				return responseModel;
+			}
+			responseModel.message = 'user has no following list';
+			return responseModel;
 		});
 };
 
@@ -148,4 +154,15 @@ exports.users = (req, res) => {
 	}).select({userId: 1, _id: 0}).execAsync().then(users => {
 		res.json(users);
 	});
+};
+
+exports.subscriptions = (req, res) => {
+	let userId = null;
+	sessionApi.getUserData(req.sessionId)
+		.then((userData) => {
+			userId = userData.uuid;
+			return taxonomiesForUser(userId);
+		}).then(data => res.jsonp(data)).catch((error) => {
+			handleError(error, res);
+		});
 };

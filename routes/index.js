@@ -15,4 +15,7 @@ module.exports = (app) => {
 		controllers.validateSession,
 		controllers.unfollowAll);
 	app.get('/users', controllers.users);
+	app.get('/subscriptions',
+		controllers.validateSession,
+		controllers.subscriptions);
 };
