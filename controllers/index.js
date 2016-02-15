@@ -73,18 +73,43 @@ exports.validateSession = (req, res, next) => {
 
 exports.validateParams = (req, res, next) => {
 	let params = req.query;
-	let subscriptions = null;
-	let subscriptionParam = params.follow || params.unfollow;
+	let follow = params.follow;
+	let unfollow = params.unfollow;
 
-	if (subscriptionParam) {
-		subscriptions = extractSubscriptionItems([].concat(subscriptionParam));
+	if (follow) {
+		follow = extractSubscriptionItems([].concat(follow));
 	}
-	if (_.isEmpty(subscriptions)) {
+	if (unfollow) {
+		unfollow = extractSubscriptionItems([].concat(unfollow));
+	}
+	if (_.isEmpty(follow) && _.isEmpty(unfollow)) {
 		return res.end(env.errors.noParameters);
 	}
 
-	req.subscriptions = subscriptions;
+	req.follow = follow || [];
+	req.unfollow = unfollow || [];
 	next();
+};
+
+const addSubscription = (userId, subscription) => {
+	let userSubscriptionItem = {
+		userId: userId,
+		taxonomyId: subscription.taxonomyId,
+		taxonomyName: subscription.taxonomyName,
+		addedAt: moment().format(env.dateFormat),
+		immediate: subscription.immediate
+	};
+	return UserSubscription.update({
+		userId: userId,
+		taxonomyId: subscription.taxonomyId
+	}, userSubscriptionItem, {upsert: true}).execAsync();
+};
+
+const removeSubscription = (userId, subscription) => {
+	return UserSubscription.remove({
+		userId: userId,
+		taxonomyId: subscription.taxonomyId
+	}).execAsync();
 };
 
 exports.follow = (req, res) => {
@@ -92,19 +117,9 @@ exports.follow = (req, res) => {
 	sessionApi.getUserData(req.sessionId)
 		.then((userData) => {
 			userId = userData.uuid;
-			return Promise.all(req.subscriptions.map(subscription => {
-				let userSubscriptionItem = {
-					userId: userData.uuid,
-					taxonomyId: subscription.taxonomyId,
-					taxonomyName: subscription.taxonomyName,
-					addedAt: moment().format(env.dateFormat),
-					immediate: subscription.immediate
-				};
-				return UserSubscription.update({
-					userId: userData.uuid,
-					taxonomyId: subscription.taxonomyId
-				}, userSubscriptionItem, {upsert: true}).execAsync();
-			}));
+			return Promise.map(req.follow, (subscription) => {
+				return addSubscription(userId, subscription);
+			});
 		}).then(() => {
 			taxonomiesForUser(userId).then(data => res.jsonp(data));
 		}).catch((error) => {
@@ -132,12 +147,9 @@ exports.unfollow = (req, res) => {
 	sessionApi.getUserData(req.sessionId)
 		.then((userData) => {
 			userId = userData.uuid;
-			return Promise.all(req.subscriptions.map(subscription => {
-				return UserSubscription.remove({
-					userId: userData.uuid,
-					taxonomyId: subscription.taxonomyId
-				}).execAsync();
-			}));
+			return Promise.map(req.unfollow, (subscription) => {
+				return removeSubscription(userId, subscription);
+			});
 		}).then(() => {
 			taxonomiesForUser(userId).then(data => res.jsonp(data));
 		}).catch((error) => {
@@ -164,6 +176,26 @@ exports.subscriptions = (req, res) => {
 			userId = userData.uuid;
 			return taxonomiesForUser(userId);
 		}).then(data => res.jsonp(data)).catch((error) => {
+			handleError(error, res);
+		});
+};
+
+exports.updateBulk = (req, res) => {
+	let userId = null;
+	sessionApi.getUserData(req.sessionId)
+		.then((userData) => {
+			userId = userData.uuid;
+			return Promise.join(
+				Promise.map(req.follow, (subscription) => {
+					return addSubscription(userId, subscription);
+				}),
+				Promise.map(req.unfollow, (subscription) => {
+					return removeSubscription(userId, subscription);
+				})
+			);
+		}).then(() => {
+			taxonomiesForUser(userId).then(data => res.jsonp(data));
+		}).catch((error) => {
 			handleError(error, res);
 		});
 };

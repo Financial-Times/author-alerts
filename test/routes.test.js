@@ -189,6 +189,57 @@ describe('api routes', () => {
 		});
 	});
 
+	describe('/updateBulk', () => {
+		let sessionServiceSpy = null;
+		before(() => {
+			sessionServiceSpy = expect.spyOn(sessionService, 'getUserData')
+				.andReturn(Promise.resolve({uuid: 'test-user-id'}));
+		});
+		it('should require a session id', (done) => {
+			request(app)
+				.get('/updateBulk')
+				.expect(200)
+				.expect(env.errors.sessionIdRequired, done);
+		});
+		it('should require parameters', (done) => {
+			request(app)
+				.get('/updateBulk')
+				.set('Cookie', ['FTSession=test-session'])
+				.expect(200)
+				.expect(env.errors.noParameters, done);
+		});
+		it('should handle author subscriptions', (done) => {
+			request(app)
+				.get('/updateBulk')
+				.query({
+					unfollow: [
+						'daily,Author Name 1,author-id-1',
+						'immediate,Author Name 2,author-id-2',
+						'daily,Author Name 3,author-id-3'
+					],
+					follow: [
+						'daily,Author Name 4,author-id-4'
+					]
+				})
+				.set('Cookie', ['FTSession=test-session'])
+				.expect(200)
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
+					expect(res.body).toBeAn(Object);
+					expect(res.body.status).toExist();
+					expect(res.body.status).toEqual('success');
+					expect(res.body.taxonomies).toBeAn(Array);
+					expect(res.body.taxonomies.length).toEqual(1);
+					return done();
+				});
+		});
+		after(() => {
+			sessionServiceSpy.restore();
+		});
+	});
+
 	describe('/unfollowall', () => {
 		let sessionServiceSpy = null;
 		before(() => {

@@ -11,6 +11,10 @@ module.exports = (app) => {
 		controllers.validateSession,
 		controllers.validateParams,
 		controllers.unfollow);
+	app.get('/updateBulk',
+		controllers.validateSession,
+		controllers.validateParams,
+		controllers.updateBulk);
 	app.get('/unfollowall',
 		controllers.validateSession,
 		controllers.unfollowAll);
