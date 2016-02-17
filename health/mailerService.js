@@ -15,9 +15,10 @@ let healthModel = {
 	panicGuide: '',
 	lastUpdated: null
 };
+let to = env.sendApi.testDestination || 'zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz';
 
 module.exports = () => {
-	return mailerService.send(env.sendApi.testDestination, 'test-subject', 'test-content')
+	return mailerService.send(to, 'test-subject', 'test-content')
 		.then(() => {
 			_.extend(healthModel, {
 				ok: true,
