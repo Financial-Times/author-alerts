@@ -12,6 +12,10 @@ const UserSubscription = mongoose.model('UserSubscription');
 /** extract to helper **/
 const createSubscriptionItem = (parts) => {
 	return parts.split(',').reduce((item, value, index, values) => {
+		/** when unsubscribing the frequency (immediate|daily) is not passed **/
+		if (values.length === 2) {
+			values.unshift(null);
+		}
 		item['taxonomyId'] = values[2];
 		item['taxonomyName'] = values[1];
 		item['immediate'] = (values[0] === 'immediate');
