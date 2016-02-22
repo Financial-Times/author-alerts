@@ -6,6 +6,7 @@ const type = 'content';
 const delta = 60 * 15;
 let healthModel = {
 	name: 'Content caching worker',
+	id: 'content-worker',
 	ok: false,
 	technicalSummary: 'Worker runs at specific interval to cache content from content api',
 	severity: 2,

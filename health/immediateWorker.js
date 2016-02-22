@@ -6,6 +6,7 @@ const type = 'immediate';
 const delta = 60 * 30;
 let healthModel = {
 	name: 'Immediate alerts worker',
+	id: 'immediate-worker',
 	ok: false,
 	technicalSummary: 'Worker sends alerts at specific interval',
 	severity: 2,

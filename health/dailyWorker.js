@@ -6,6 +6,7 @@ const type = 'daily';
 const delta = 60 * 60 * 28;
 let healthModel = {
 	name: 'Daily alerts worker',
+	id: 'daily-worker',
 	ok: false,
 	technicalSummary: 'Worker sends alerts daily, at specific date and time',
 	severity: 2,

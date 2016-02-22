@@ -7,6 +7,7 @@ const env = require('../env');
 
 let healthModel = {
 	name: 'Send API',
+	id: 'send-api',
 	ok: false,
 	technicalSummary: 'Send email messages',
 	severity: 2,
@@ -24,12 +25,12 @@ module.exports = () => {
 				ok: true,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(_.pick(healthModel, ['name', 'ok', 'lastUpdated']));
+			return Promise.resolve(_.pick(healthModel, ['name', 'id', 'ok', 'lastUpdated']));
 		}).catch(error => {
 			_.extend(healthModel, {
 				checkOutput: error,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(_.pick(healthModel, ['name', 'ok', 'lastUpdated', 'checkOutput']));
+			return Promise.resolve(_.pick(healthModel, ['name', 'id', 'ok', 'lastUpdated', 'checkOutput']));
 		});
 };

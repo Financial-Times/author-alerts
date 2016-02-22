@@ -12,7 +12,8 @@ module.exports = {
 	manifestPath: path.join(__dirname, 'package.json'),
 	about: {
 		schemaVersion: 1,
-		name: 'author-alerts'
+		name: 'author-alerts',
+		systemCode: 'author-alerts'
 	},
 	goodToGoTest() {
 		return health.check().then(r => r.reduce(gtgReducer, true));
