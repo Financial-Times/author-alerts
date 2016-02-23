@@ -13,7 +13,7 @@ let healthModel = {
 	severity: 2,
 	businessImpact: 'No alerts will be sent',
 	checkOutput: '',
-	panicGuide: '',
+	panicGuide: 'Check logs for both daily and immediate workers',
 	lastUpdated: null
 };
 let to = 'zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz';
@@ -25,12 +25,12 @@ module.exports = () => {
 				ok: true,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(_.pick(healthModel, ['name', 'id', 'ok', 'lastUpdated']));
+			return Promise.resolve(_.omit(healthModel, ['checkOutput']));
 		}).catch(error => {
 			_.extend(healthModel, {
 				checkOutput: error,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(_.pick(healthModel, ['name', 'id', 'ok', 'lastUpdated', 'checkOutput']));
+			return Promise.resolve(healthModel);
 		});
 };

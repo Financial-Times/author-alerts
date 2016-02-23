@@ -12,7 +12,7 @@ let healthModel = {
 	severity: 2,
 	businessImpact: 'No immediate alerts will be sent',
 	checkOutput: '',
-	panicGuide: '',
+	panicGuide: 'Check logs for immediate worker',
 	lastUpdated: null
 };
 

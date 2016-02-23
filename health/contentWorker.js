@@ -12,7 +12,7 @@ let healthModel = {
 	severity: 2,
 	businessImpact: 'No content for alerts will be available',
 	checkOutput: '',
-	panicGuide: '',
+	panicGuide: 'Check logs for content worker',
 	lastUpdated: null
 };
 

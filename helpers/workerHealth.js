@@ -23,7 +23,7 @@ module.exports = (type, delta, model) => {
 				lastUpdated: moment().format(env.dateFormat),
 				checkOutput: 'No statistics found.'
 			});
-			return Promise.resolve(_.pick(model, ['name', 'id', 'ok', 'lastUpdated', 'checkOutput']));
+			return Promise.resolve(model);
 		}
 
 		let lastRun = parseInt(stat.endTime, 10);
@@ -35,12 +35,12 @@ module.exports = (type, delta, model) => {
 			_.extend(model, {
 				checkOutput: stat.msg
 			});
-			return Promise.resolve(_.pick(model, ['name', 'id', 'ok', 'lastUpdated', 'checkOutput']));
+			return Promise.resolve(model);
 		}
 
 		_.extend(model, {
 			ok: true
 		});
-		return Promise.resolve(_.pick(model, ['name', 'id', 'ok', 'lastUpdated']));
+		return Promise.resolve(_.omit(model, ['checkOutput']));
 	});
 };
