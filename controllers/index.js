@@ -16,6 +16,9 @@ const createSubscriptionItem = (parts) => {
 		if (values.length === 2) {
 			values.unshift(null);
 		}
+		if (_.isEmpty(values[1]) || _.isEmpty(values[2])) {
+			return {};
+		}
 		item['taxonomyId'] = values[2];
 		item['taxonomyName'] = values[1];
 		item['immediate'] = (values[0] === 'immediate');
@@ -81,10 +84,12 @@ exports.validateParams = (req, res, next) => {
 	let unfollow = params.unfollow;
 
 	if (follow) {
-		follow = extractSubscriptionItems([].concat(follow));
+		follow = extractSubscriptionItems([].concat(follow)).
+			filter(item => !_.isEmpty(item));
 	}
 	if (unfollow) {
-		unfollow = extractSubscriptionItems([].concat(unfollow));
+		unfollow = extractSubscriptionItems([].concat(unfollow)).
+			filter(item => !_.isEmpty(item));
 	}
 	if (_.isEmpty(follow) && _.isEmpty(unfollow)) {
 		return res.end(env.errors.noParameters);

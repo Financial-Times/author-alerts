@@ -4,7 +4,7 @@ const config = {
 	dateFormat: 'YYYY-MM-DD[T]HH:mm:ss[Z]',
 	errors: {
 		sessionIdRequired: 'A valid session id must be provided.',
-		noParameters: 'No parameters found.',
+		noParameters: 'No or not enough parameters found.',
 		idParameterRequired: `'id' parameter is required.`
 	},
 	sessionApi: {
