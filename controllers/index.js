@@ -9,25 +9,38 @@ const _ = require('lodash');
 
 const UserSubscription = mongoose.model('UserSubscription');
 
-/** extract to helper **/
-const createSubscriptionItem = (parts) => {
-	return parts.split(',').reduce((item, value, index, values) => {
-		/** when unsubscribing the frequency (immediate|daily) is not passed **/
-		if (values.length === 2) {
-			values.unshift(null);
-		}
-		if (_.isEmpty(values[1]) || _.isEmpty(values[2])) {
-			return {};
-		}
+const createFollowSubscriptionItem = (parts) => {
+	let values = parts.split(',');
+	if (_.isEmpty(values[0]) || _.isEmpty(values[1]) || _.isEmpty(values[2])) {
+		return {};
+	}
+	return values.reduce((item, value, index, values) => {
 		item['taxonomyId'] = values[2];
 		item['taxonomyName'] = values[1];
 		item['immediate'] = (values[0] === 'immediate');
 		return item;
 	}, {});
 };
+const createUnfollowSubscriptionItem = (parts) => {
+	let values = parts.split(',');
+	if (_.isEmpty(values[0]) || _.isEmpty(values[1])) {
+		return {};
+	}
+	return values.reduce((item, value, index, values) => {
+		item['taxonomyId'] = values[1];
+		item['taxonomyName'] = values[0];
+		return item;
+	}, {});
+};
 
-const extractSubscriptionItems = (paramsList) => {
-	return paramsList.map(createSubscriptionItem);
+const extractFollowSubscriptionItems = (paramsList) => {
+	return paramsList.map(createFollowSubscriptionItem).
+		filter(item => !_.isEmpty(item));
+};
+
+const extractUnfollowSubscriptionItems = (paramsList) => {
+	return paramsList.map(createUnfollowSubscriptionItem).
+		filter(item => !_.isEmpty(item));
 };
 
 const getTaxonomies = (list) => {
@@ -84,12 +97,10 @@ exports.validateParams = (req, res, next) => {
 	let unfollow = params.unfollow;
 
 	if (follow) {
-		follow = extractSubscriptionItems([].concat(follow)).
-			filter(item => !_.isEmpty(item));
+		follow = extractFollowSubscriptionItems([].concat(follow));
 	}
 	if (unfollow) {
-		unfollow = extractSubscriptionItems([].concat(unfollow)).
-			filter(item => !_.isEmpty(item));
+		unfollow = extractUnfollowSubscriptionItems([].concat(unfollow));
 	}
 	if (_.isEmpty(follow) && _.isEmpty(unfollow)) {
 		return res.end(env.errors.noParameters);
