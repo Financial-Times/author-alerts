@@ -166,9 +166,9 @@ describe('api routes', () => {
 				.get('/unfollow')
 				.query({
 					unfollow: [
-						'daily,Author Name 1,author-id-1',
-						'immediate,Author Name 2,author-id-2',
-						'daily,Author Name 3,author-id-3'
+						'Author Name 1,author-id-1',
+						'Author Name 2,author-id-2',
+						'Author Name 3,author-id-3'
 					]
 				})
 				.set('Cookie', ['FTSession=test-session'])
@@ -213,9 +213,9 @@ describe('api routes', () => {
 				.get('/updateBulk')
 				.query({
 					unfollow: [
-						'daily,Author Name 1,author-id-1',
-						'immediate,Author Name 2,author-id-2',
-						'daily,Author Name 3,author-id-3'
+						'Author Name 1,author-id-1',
+						'Author Name 2,author-id-2',
+						'Author Name 3,author-id-3'
 					],
 					follow: [
 						'daily,Author Name 4,author-id-4'
