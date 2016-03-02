@@ -19,13 +19,20 @@ const getImmediateUserSubscriptions = () => {
 			}
 		},
 		{
+			$sort: {
+				_id: -1
+			}
+		},
+		{
 			$group: {
 				_id: '$userId',
-				subscriptions: { $push: {
-					taxonomyId: '$taxonomyId',
-					taxonomyName: '$taxonomyName',
-					addedAt: '$addedAt'
-				}}
+				subscriptions: {
+					$push: {
+						taxonomyId: '$taxonomyId',
+						taxonomyName: '$taxonomyName',
+						addedAt: '$addedAt'
+					}
+				}
 			}
 		}
 	]).execAsync();

@@ -54,8 +54,8 @@ exports.getArticles = (user, logModel) => {
 		let lastDate = null;
 		if ( logItem ) {
 			lastDate = moment(logItem.lastSent).format(env.dateFormat);
-		} else if (user.hasOwnProperty('addedAt')) {
-			lastDate = moment(user.addedAt).format(env.dateFormat);
+		} else if (user.subscriptions.length) {
+			lastDate = moment(user.subscriptions[0].addedAt).format(env.dateFormat);
 		} else {
 			lastDate = moment().subtract(1, 'days').format(env.dateFormat);
 		}
