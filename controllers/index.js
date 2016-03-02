@@ -11,7 +11,9 @@ const UserSubscription = mongoose.model('UserSubscription');
 
 const createFollowSubscriptionItem = (parts) => {
 	let values = parts.split(',');
-	if (_.isEmpty(values[0]) || _.isEmpty(values[1]) || _.isEmpty(values[2])) {
+	if (_.isEmpty(_.trim(values[0])) ||
+		_.isEmpty(_.trim(values[1])) ||
+		_.isEmpty(_.trim(values[2]))) {
 		return {};
 	}
 	return values.reduce((item, value, index, values) => {
@@ -23,7 +25,8 @@ const createFollowSubscriptionItem = (parts) => {
 };
 const createUnfollowSubscriptionItem = (parts) => {
 	let values = parts.split(',');
-	if (_.isEmpty(values[0]) || _.isEmpty(values[1])) {
+	if (_.isEmpty(_.trim(values[0])) ||
+		_.isEmpty(_.trim(values[1]))) {
 		return {};
 	}
 	return values.reduce((item, value, index, values) => {
