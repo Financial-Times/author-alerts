@@ -8,6 +8,8 @@ const mongoose = Promise.promisifyAll(require('mongoose'));
 const _ = require('lodash');
 
 const UserSubscription = mongoose.model('UserSubscription');
+const ImmediateLog = mongoose.model('ImmediateLog');
+const DailyLog = mongoose.model('DailyLog');
 
 const createFollowSubscriptionItem = (parts) => {
 	let values = parts.split(',');
@@ -78,6 +80,46 @@ const taxonomiesForUser = (userId) => {
 		});
 };
 
+const addSubscription = (userId, subscription) => {
+	let userSubscriptionItem = {
+		userId: userId,
+		taxonomyId: subscription.taxonomyId,
+		taxonomyName: subscription.taxonomyName,
+		addedAt: moment().format(env.dateFormat),
+		immediate: subscription.immediate
+	};
+	return UserSubscription.update({
+		userId: userId,
+		taxonomyId: subscription.taxonomyId
+	}, userSubscriptionItem, {upsert: true}).execAsync();
+};
+
+const removeDailyLogs = (userId) => {
+	return DailyLog.remove({userId: userId}).execAsync();
+};
+const removeImmediateLogs = (userId) => {
+	return ImmediateLog.remove({userId: userId}).execAsync();
+};
+
+const cleanUserLogs = (userId) => {
+	return UserSubscription.findOne({userId: userId}).execAsync().
+	then(sub => {
+		if(!sub) {
+			return Promise.all([
+				removeDailyLogs(userId),
+				removeImmediateLogs(userId)
+			]);
+		}
+	});
+};
+
+const removeSubscription = (userId, subscription) => {
+	return UserSubscription.remove({
+		userId: userId,
+		taxonomyId: subscription.taxonomyId
+	}).execAsync().then(() => cleanUserLogs(userId));
+};
+
 /*eslint-disable no-console */
 const handleError = (error, res) => {
 	console.log(error);
@@ -112,27 +154,6 @@ exports.validateParams = (req, res, next) => {
 	req.follow = follow || [];
 	req.unfollow = unfollow || [];
 	next();
-};
-
-const addSubscription = (userId, subscription) => {
-	let userSubscriptionItem = {
-		userId: userId,
-		taxonomyId: subscription.taxonomyId,
-		taxonomyName: subscription.taxonomyName,
-		addedAt: moment().format(env.dateFormat),
-		immediate: subscription.immediate
-	};
-	return UserSubscription.update({
-		userId: userId,
-		taxonomyId: subscription.taxonomyId
-	}, userSubscriptionItem, {upsert: true}).execAsync();
-};
-
-const removeSubscription = (userId, subscription) => {
-	return UserSubscription.remove({
-		userId: userId,
-		taxonomyId: subscription.taxonomyId
-	}).execAsync();
 };
 
 exports.follow = (req, res) => {
