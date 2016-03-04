@@ -19,9 +19,9 @@ const createFollowSubscriptionItem = (parts) => {
 		return {};
 	}
 	return values.reduce((item, value, index, values) => {
-		item['taxonomyId'] = values[2];
-		item['taxonomyName'] = values[1];
-		item['immediate'] = (values[0] === 'immediate');
+		item['taxonomyId'] = _.trim(values[2]);
+		item['taxonomyName'] = _.trim(values[1]);
+		item['immediate'] = (_.trim(values[0]) === 'immediate');
 		return item;
 	}, {});
 };
@@ -32,8 +32,8 @@ const createUnfollowSubscriptionItem = (parts) => {
 		return {};
 	}
 	return values.reduce((item, value, index, values) => {
-		item['taxonomyId'] = values[1];
-		item['taxonomyName'] = values[0];
+		item['taxonomyId'] = _.trim(values[1]);
+		item['taxonomyName'] = _.trim(values[0]);
 		return item;
 	}, {});
 };
