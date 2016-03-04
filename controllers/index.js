@@ -63,7 +63,7 @@ const getTaxonomies = (list) => {
 };
 
 const taxonomiesForUser = (userId) => {
-	return UserSubscription.find({userId: userId}).execAsync()
+	return UserSubscription.find({userId: userId}).sort({_id: -1}).execAsync()
 		.then(subscriptions => {
 			if (subscriptions.length) {
 				return {
