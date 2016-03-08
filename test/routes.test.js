@@ -17,7 +17,7 @@ describe('api routes', () => {
 		it('should require a session id', (done) => {
 			request(app)
 				.get('/follow')
-				.expect(200)
+				.expect(403)
 				.expect(env.errors.sessionIdRequired, done);
 		});
 		it('should require parameters', (done) => {
@@ -119,7 +119,7 @@ describe('api routes', () => {
 		it('should require a session id', (done) => {
 			request(app)
 				.get('/subscriptions')
-				.expect(200)
+				.expect(403)
 				.expect(env.errors.sessionIdRequired, done);
 		});
 		it('should find authors that a user is subscribed to', (done) => {
@@ -151,7 +151,7 @@ describe('api routes', () => {
 		it('should require a session id', (done) => {
 			request(app)
 				.get('/unfollow')
-				.expect(200)
+				.expect(403)
 				.expect(env.errors.sessionIdRequired, done);
 		});
 		it('should require parameters', (done) => {
@@ -198,7 +198,7 @@ describe('api routes', () => {
 		it('should require a session id', (done) => {
 			request(app)
 				.get('/updateBulk')
-				.expect(200)
+				.expect(403)
 				.expect(env.errors.sessionIdRequired, done);
 		});
 		it('should require parameters', (done) => {
@@ -249,7 +249,7 @@ describe('api routes', () => {
 		it('should require a session id', (done) => {
 			request(app)
 				.get('/unfollowall')
-				.expect(200)
+				.expect(403)
 				.expect(env.errors.sessionIdRequired, done);
 		});
 		it('should unsubscribe the user from all authors', (done) => {

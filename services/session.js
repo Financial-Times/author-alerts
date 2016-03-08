@@ -17,8 +17,11 @@ const getUserData = (sessionId) => {
 	};
 	return new Promise((resolve, reject) => {
 		request(options, (error, response, body) => {
-			if ( error || response.statusCode !== 200 ) {
-				return reject(errPrefix + (error || response.body));
+			if (error) {
+				return reject(error);
+			}
+			if (response.statusCode !== 200) {
+				return reject(new Error(env.errors.sessionIdRequired));
 			}
 			try {
 				let sessionData = JSON.parse(body);
