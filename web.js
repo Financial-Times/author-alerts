@@ -10,24 +10,6 @@ const app = express();
 const throng = require('throng');
 const concurrency = process.env.WEB_CONCURRENCY || 1;
 
-
-require('./models');
-
-app.use(cookieParser());
-app.use((req, res, next) => {
-	res.setHeader('Cache-Control', 'no-cache');
-	return next();
-});
-
-require('express-ftwebservice')(app, require('./ftwebserviceOpts'));
-require('./routes')(app);
-
-require('./services/db').connect(listen);
-
-function listen() {
-	app.listen(port);
-}
-
 module.exports = app;
 
 
@@ -44,5 +26,20 @@ function start() {
 		process.exit();
 	});
 
+	require('./models');
 
+	app.use(cookieParser());
+	app.use((req, res, next) => {
+		res.setHeader('Cache-Control', 'no-cache');
+		return next();
+	});
+
+	require('express-ftwebservice')(app, require('./ftwebserviceOpts'));
+	require('./routes')(app);
+
+	require('./services/db').connect(listen);
+
+	function listen() {
+		app.listen(port);
+	}
 }
