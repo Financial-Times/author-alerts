@@ -39,6 +39,4 @@ function start() {
 		console.log('Worker exiting');
 		process.exit();
 	});
-
-
 }
