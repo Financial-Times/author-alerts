@@ -6,7 +6,10 @@ const cookieParser = require('cookie-parser');
 const port = process.env['PORT'] || 4000;
 const app = express();
 
-module.exports = app;
+
+const throng = require('throng');
+const concurrency = process.env.WEB_CONCURRENCY || 1;
+
 
 require('./models');
 
@@ -21,3 +24,21 @@ function listen() {
 	app.listen(port);
 }
 
+module.exports = app;
+
+
+throng(start, {
+	workers: concurrency,
+	lifetime: Infinity
+});
+
+function start() {
+	console.log('Started worker');
+
+	process.on('SIGTERM', function() {
+		console.log('Worker exiting');
+		process.exit();
+	});
+
+
+}
