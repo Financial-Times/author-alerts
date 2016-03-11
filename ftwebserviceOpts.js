@@ -2,6 +2,12 @@
 const path = require('path');
 const health = require('./health');
 
+let healthChecks = health.check();
+
+setInterval(function () {
+	healthChecks = health.check();
+}, 60000);
+
 const gtgReducer = (res, item) => {
 	if(item.ok === false) {
 		res = false;
@@ -16,9 +22,9 @@ module.exports = {
 		systemCode: 'author-alerts'
 	},
 	goodToGoTest() {
-		return health.check().then(r => r.reduce(gtgReducer, true));
+		return healthChecks.then(r => r.reduce(gtgReducer, true));
 	},
 	healthCheck() {
-		return health.check();
+		return healthChecks;
 	}
 };
