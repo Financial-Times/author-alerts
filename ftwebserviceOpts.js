@@ -2,25 +2,6 @@
 const path = require('path');
 const health = require('./health');
 
-let cached = null;
-let call = null;
-
-const checkHealth = () => {
-	return health.check().then(res => {
-		clearTimeout(call);
-		call = setTimeout(checkHealth, 60000);
-		cached = res;
-		return cached;
-	});
-};
-
-const getHealth = () => {
-	if (cached) {
-		return Promise.resolve(cached);
-	}
-	return checkHealth();
-};
-
 const gtgReducer = (res, item) => {
 	if(item.ok === false) {
 		res = false;
@@ -35,9 +16,9 @@ module.exports = {
 		systemCode: 'author-alerts'
 	},
 	goodToGoTest() {
-		return getHealth().then(r => r.reduce(gtgReducer, true));
+		return health.check().then(r => r.reduce(gtgReducer, true));
 	},
 	healthCheck() {
-		return getHealth();
+		return health.check();
 	}
 };
