@@ -2,18 +2,23 @@
 const path = require('path');
 const health = require('./health');
 
-let healthChecks;
-let healthChecksStarted = false;
+let cached = null;
+let call = null;
 
-let startHealthchecks = () => {
-	if (!healthChecksStarted) {
-		healthChecksStarted = true;
+const checkHealth = () => {
+	return health.check().then(res => {
+		clearTimeout(call);
+		call = setTimeout(checkHealth, 10000);
+		cached = res;
+		return cached;
+	});
+};
 
-		healthChecks = health.check();
-		setInterval(() => {
-			healthChecks = health.check();
-		}, 60000);
+const getHealth = () => {
+	if (cached) {
+		return Promise.resolve(cached);
 	}
+	return checkHealth();
 };
 
 const gtgReducer = (res, item) => {
@@ -30,17 +35,9 @@ module.exports = {
 		systemCode: 'author-alerts'
 	},
 	goodToGoTest() {
-		if (!healthChecksStarted) {
-			startHealthchecks();
-		}
-
-		return healthChecks.then(r => r.reduce(gtgReducer, true));
+		return getHealth().then(r => r.reduce(gtgReducer, true));
 	},
 	healthCheck() {
-		if (!healthChecksStarted) {
-			startHealthchecks();
-		}
-
-		return healthChecks;
+		return getHealth();
 	}
 };
