@@ -2,11 +2,19 @@
 const path = require('path');
 const health = require('./health');
 
-let healthChecks = health.check();
+let healthChecks;
+let healthChecksStarted = false;
 
-setInterval(function () {
-	healthChecks = health.check();
-}, 60000);
+let startHealthchecks = () => {
+	if (!healthChecksStarted) {
+		healthChecksStarted = true;
+
+		healthChecks = health.check();
+		setInterval(() => {
+			healthChecks = health.check();
+		}, 60000);
+	}
+};
 
 const gtgReducer = (res, item) => {
 	if(item.ok === false) {
@@ -22,9 +30,17 @@ module.exports = {
 		systemCode: 'author-alerts'
 	},
 	goodToGoTest() {
+		if (!healthChecksStarted) {
+			startHealthchecks();
+		}
+
 		return healthChecks.then(r => r.reduce(gtgReducer, true));
 	},
 	healthCheck() {
+		if (!healthChecksStarted) {
+			startHealthchecks();
+		}
+
 		return healthChecks;
 	}
 };
