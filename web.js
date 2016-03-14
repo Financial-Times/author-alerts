@@ -11,6 +11,10 @@ module.exports = app;
 require('./models');
 
 app.use(cookieParser());
+app.use((req, res, next) => {
+	res.setHeader('Cache-Control', 'no-cache');
+	return next();
+});
 
 require('express-ftwebservice')(app, require('./ftwebserviceOpts'));
 require('./routes')(app);
