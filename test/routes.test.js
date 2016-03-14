@@ -3,7 +3,9 @@
 const request = require('supertest');
 const expect = require('expect');
 const env = require('../env');
-const app = require('../web');
+const app = require('../web')({
+	port: process.env['PORT'] || 4000
+});
 
 const sessionService = require('../services/session');
 
