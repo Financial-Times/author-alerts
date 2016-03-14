@@ -8,7 +8,7 @@ let call = null;
 const checkHealth = () => {
 	return health.check().then(res => {
 		clearTimeout(call);
-		call = setTimeout(checkHealth, 10000);
+		call = setTimeout(checkHealth, 60000);
 		cached = res;
 		return cached;
 	});
