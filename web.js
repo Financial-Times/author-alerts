@@ -1,27 +1,31 @@
 'use strict';
 
-const express = require('express');
-const cookieParser = require('cookie-parser');
+module.exports = (state) => {
+	const express = require('express');
+	const cookieParser = require('cookie-parser');
 
-const port = process.env['PORT'] || 4000;
-const app = express();
+	const app = express();
 
-module.exports = app;
+	require('./models');
 
-require('./models');
+	app.use(cookieParser());
+	app.use((req, res, next) => {
+		res.setHeader('Cache-Control', 'no-cache');
+		return next();
+	});
 
-app.use(cookieParser());
-app.use((req, res, next) => {
-	res.setHeader('Cache-Control', 'no-cache');
-	return next();
-});
+	if ( state.ftWebserviceOpts ) {
+		require('express-ftwebservice')(app, state.ftWebserviceOpts);
+	}
 
-require('express-ftwebservice')(app, require('./ftwebserviceOpts'));
-require('./routes')(app);
+	require('./routes')(app);
 
-require('./services/db').connect(listen);
+	require('./services/db').connect(listen);
 
-function listen() {
-	app.listen(port);
-}
+	function listen() {
+		app.listen(state.port);
+	}
+	return app;
+};
+
 
