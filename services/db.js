@@ -11,7 +11,8 @@ function dbConnect() {
 			}
 		}
 	};
-	return mongoose.connect(env.mongodb.uri, options).connection;
+	mongoose.connect(env.mongodb.uri, options);
+	return mongoose.connection;
 }
 
 /*eslint-disable no-console */
