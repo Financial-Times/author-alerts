@@ -12,5 +12,7 @@ const ArticleSchema = new Schema({
 	authorId: {type: String, index: true}
 });
 
+ArticleSchema.index({authorId: 1, publishDate: 1});
+ArticleSchema.index({authorId: 1, publishDate: -1});
 ArticleSchema.set('versionKey', false);
 mongoose.model('Article', ArticleSchema);

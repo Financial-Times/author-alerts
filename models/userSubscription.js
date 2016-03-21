@@ -13,6 +13,7 @@ const UserSubscriptionSchema = new Schema({
 	immediate: Boolean
 });
 
+UserSubscriptionSchema.index({userId: 1, _id: -1});
 UserSubscriptionSchema.set('versionKey', false);
 
 mongoose.model('UserSubscription', UserSubscriptionSchema);

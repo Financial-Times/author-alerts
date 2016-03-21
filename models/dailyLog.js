@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const DailyLogSchema = new Schema({
 	userId: {type: String, index: true},
 	sent: Boolean,
-	lastSent: Date,
+	lastSent: {type: Date, index: true},
 	logMessage: String
 });
 
