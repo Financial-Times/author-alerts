@@ -36,7 +36,7 @@ exports.getArticles = (taxonomyId, newerThan) => {
 		body: {
 			'queryString': `authorsId:="${taxonomyId}" AND initialPublishDateTime:>${newerThan}`,
 			'queryContext' : {
-				'curations' : ['ARTICLES']
+				'curations' : ['ARTICLES', 'BLOGS']
 			},
 			'resultContext': {
 				'maxResults': 100,
