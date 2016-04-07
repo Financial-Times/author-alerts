@@ -35,14 +35,14 @@ const insertArticle = (article) => {
 };
 
 const handleAuthorContent = (authorId) => {
-	return Article.findOne({authorId: authorId}).sort({publishDate: -1}).limit(1).execAsync().then(article => {
+	return Article.findOne({authorId: authorId}).sort({publishDate: -1}).execAsync().then(article => {
 		let afterDate = moment().subtract(1, 'days').format(dateFormat);
 		if ( article ) {
 			afterDate = moment(article.publishDate).format(dateFormat);
 		}
 		return contentApi.getArticles(authorId, afterDate).then(articles => {
 			if (articles.length) {
-				return Promise.all(articles.map(insertArticle));
+				return Promise.map(articles, insertArticle);
 			}
 		}).catch(error => {
 			console.log(JSON.stringify({error, authorId, afterDate}));
@@ -55,7 +55,7 @@ const getContent = () => {
 	stats = new Statistics('content', StatsModel);
 	stats.start();
 	getAuthorsIds().then(authorsIds => {
-		return Promise.all(authorsIds.map(handleAuthorContent));
+		return Promise.map(authorsIds, handleAuthorContent, {concurrency: 100});
 	}).catch(console.log).finally(() => {
 		stats.end();
 		stats.save(() => setTimeout(getContent, 300000));
