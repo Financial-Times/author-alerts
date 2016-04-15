@@ -52,7 +52,7 @@ const handleUser = (user) => {
 			messageService.manageAd(Object.keys(userData).length);
 			let htmlBody = messageService.template.html(data);
 			let textBody = messageService.template.text(data);
-			return mailer.send((env.sendApi.testDestination || userId), subject, htmlBody, textBody)
+			return mailer.send(userId, subject, htmlBody, textBody)
 				.then(res => {
 					stats.success();
 					return addSuccessLog(res, userId);
