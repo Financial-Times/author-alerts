@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 const _ = require('lodash');
-const mailerService = require('../services/mailer');
+const fetch = require('node-fetch');
 const env = require('../env');
 
 let healthModel = {
@@ -16,21 +16,24 @@ let healthModel = {
 	panicGuide: 'Check logs for both daily and immediate workers',
 	lastUpdated: null
 };
-let to = 'zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz';
+
+let healthUrl = env.sendApi.healthUrl;
 
 module.exports = () => {
-	return mailerService.send(to, 'test-subject', 'test-content')
-		.then(() => {
+	return fetch(healthUrl).then(res => res.json()).then(json => {
+		return json.checks.filter(check => check.ok !== true);
+	}).then(failed => {
+		if(!failed.length) {
 			_.extend(healthModel, {
 				ok: true,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(_.omit(healthModel, ['checkOutput']));
-		}).catch(error => {
+		} else {
 			_.extend(healthModel, {
-				checkOutput: error,
+				checkOutput: 'Send Api is down',
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			return Promise.resolve(healthModel);
-		});
+		}
+		return Promise.resolve(_.omit(healthModel, ['checkOutput']));
+	});
 };

@@ -24,6 +24,7 @@
     "moment": "^2.10.6",
     "moment-timezone": "^0.5.0",
     "mongoose": "^4.2.9",
+    "node-fetch": "^1.5.1",
     "request": "^2.67.0",
     "throng": "^2.0.1"
   }
