@@ -18,9 +18,8 @@ let healthModel = {
 };
 
 let healthUrl = env.sendApi.healthUrl;
-let currentHealth = healthModel;
 
-const checkHealth = () => {
+module.exports = () => {
 	return fetch(healthUrl).then(res => res.json()).then(json => {
 		return json.checks.filter(check => check.ok !== true);
 	}).then(failed => {
@@ -29,21 +28,13 @@ const checkHealth = () => {
 				ok: true,
 				lastUpdated: moment().format(env.dateFormat)
 			});
-			currentHealth = _.omit(healthModel, ['checkOutput']);
-		} else {
-			_.extend(healthModel, {
-				checkOutput: 'Send Api is down',
-				lastUpdated: moment().format(env.dateFormat)
-			});
-			currentHealth = healthModel;
+			return Promise.resolve(_.omit(healthModel, ['checkOutput']));
 		}
+		_.extend(healthModel, {
+			checkOutput: 'Send Api is down',
+			lastUpdated: moment().format(env.dateFormat)
+		});
+		return Promise.resolve(healthModel);
 	});
 };
 
-setInterval(() => {
-	checkHealth().then(() => {});
-}, 120000);
-
-module.exports = () => {
-	return Promise.resolve(currentHealth);
-};
