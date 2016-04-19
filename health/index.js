@@ -7,7 +7,7 @@ const join = require('path').join;
 const healthFiles = fs.readdirSync(__dirname)
 		.filter(file =>  ~file.indexOf('.js') && (file.indexOf('index') === -1));
 
-const checkHealth = (file) => require(join(__dirname, file))().catch(console.log);
+const checkHealth = (file) => require(join(__dirname, file))();
 
 exports.check = () => {
 	return Promise.map(healthFiles, checkHealth);

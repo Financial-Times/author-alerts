@@ -18,6 +18,7 @@ const config = {
 	sendApi: {
 		url: process.env['SEND_API_URL'],
 		key: process.env['SEND_API_KEY'],
+		healthUrl: process.env['SEND_API_HEALTH_URL'],
 		testDestination: process.env['TEST_SEND_UUID']
 	},
 	mongodb: {
