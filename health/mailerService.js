@@ -23,17 +23,20 @@ module.exports = () => {
 	return fetch(healthUrl).then(res => res.json()).then(json => {
 		return json.checks.filter(check => check.ok !== true);
 	}).then(failed => {
-		if(!failed.length) {
-			_.extend(healthModel, {
-				ok: true,
-				lastUpdated: moment().format(env.dateFormat)
-			});
-		} else {
-			_.extend(healthModel, {
-				checkOutput: 'Send Api is down',
-				lastUpdated: moment().format(env.dateFormat)
-			});
-		}
-		return Promise.resolve(_.omit(healthModel, ['checkOutput']));
+		return new Promise((resolve) => {
+			if(!failed.length) {
+				_.extend(healthModel, {
+					ok: true,
+					lastUpdated: moment().format(env.dateFormat)
+				});
+				resolve(_.omit(healthModel, ['checkOutput']));
+			} else {
+				_.extend(healthModel, {
+					checkOutput: 'Send Api is down',
+					lastUpdated: moment().format(env.dateFormat)
+				});
+				resolve(healthModel);
+			}
+		});
 	});
 };
