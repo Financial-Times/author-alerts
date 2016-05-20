@@ -46,6 +46,8 @@ const handleUser = (user) => {
 				title: 'author alerts'.toUpperCase(),
 				date: now.format('dddd Do MMMM'),
 				year: now.format('YYYY'),
+				surveyText: 'Give us your feedback on Author Alerts',
+				surveyUrl: 'https://www.surveymonkey.co.uk/r/3JDXVYM',
 				userData
 			};
 			messageService.resetAuthorIndex();
