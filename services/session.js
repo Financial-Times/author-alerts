@@ -12,7 +12,7 @@ const getUserData = (sessionId) => {
 	let options = {
 		url: env.sessionApi.url + sessionId,
 		headers: {
-			'FT_Api_Key': env.sessionApi.key
+			'FT-Api-Key': env.sessionApi.key
 		}
 	};
 	return new Promise((resolve, reject) => {
